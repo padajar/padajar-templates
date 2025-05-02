@@ -1,0 +1,320 @@
+% Copyright 2025 Paolo Adajar (padajar.com, paoloadajar@mit.edu)
+
+% Permission is hereby granted, free of charge, to any person obtaining a copy
+% 	of this software and associated documentation files (the "Software"), to
+% 	deal in the Software without restriction, including without limitation the
+% 	rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+% 	sell copies of the Software, and to permit persons to whom the Software is
+% 	furnished to do so, subject to the following conditions:
+%
+% 	The above copyright notice and this permission notice shall be included in
+%	all copies or substantial portions of the Software.
+%
+% 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+% 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+% 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+%	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+% 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+% 	FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+% 	IN THE SOFTWARE.
+
+% padajar.sty - Custom LaTeX style package
+% Created on 2025-03-22
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{padajar-defaults}[2025/03/21 Custom LaTeX style package]
+
+\newif\if@padajarserif    \@padajarseriffalse		% serif opt (default false)
+	\DeclareOption{serif}{\@padajarseriftrue}
+\newif\if@padajarfancyhdr \@padajarfancyhdrtrue		% fancyhdr opt (default true)
+	\DeclareOption{nofancyhdr}{\@padajarfancyhdrfalse}
+\newif\if@padajardoc \@padajardocfalse				% doc opt (default false)
+	\DeclareOption{doc}{\@padajardoctrue}
+\newif\if@padajarslides \@padajarslidesfalse		% slides opt (default false)
+	\DeclareOption{slides}{\@padajarslidestrue}
+\ProcessOptions\relax
+
+
+% suppress some warnings
+\RequirePackage{silence}
+\WarningFilter{fancyhdr}{\string\headheight\space is too}
+\WarningFilter{fancyhdr}{\string\footskip\space is too small}
+\WarningFilter{unicode-math}{original `unicode-math' definition}
+\WarningsOff
+
+% Document setup, base packages
+\RequirePackage[english, iso]{isodate}				% ISO date
+\RequirePackage[dvipsnames, svgnames,]{xcolor}		% xcolor
+\RequirePackage[many]{tcolorbox}					% nice boxes
+\if@padajarfancyhdr									% fancyhdr if requested
+	\RequirePackage{fancyhdr} \else \fi
+%\RequirePackage[T1]{fontenc}						% font encoding
+\RequirePackage[l]{plex-mono}							% ibm plex mono
+\RequirePackage[sb, l]{plex-serif}					% ibm plex serif
+\if@padajarserif \RequirePackage[mb, l]{plex-sans}  % ibm plex sans (non-default)
+\else \RequirePackage[sfdefault, mb, l]{plex-sans}  % ibm plex sans (default)
+\fi
+%\RequirePackage[]{plex-serif}					% ibm plex serif
+%\if@padajarserif \RequirePackage[]{plex-sans}  % ibm plex sans (non-default)
+%\else \RequirePackage[sfdefault]{plex-sans}  % ibm plex sans (default)
+%\fi
+
+\if@padajardoc										%  if requested
+\RequirePackage[left=1in, right=1in, top=1in, bottom=0.5in]{geometry}
+\RequirePackage{enumitem}							% enum cusotmization
+%	\setlength{\partopsep}{0pt}
+%	\setlength{\topsep}{0pt}
+	\setlist[1]{partopsep=0pt, topsep=0pt}
+%	\setlist[itemize,2]{topsep=12pt}
+% default space
+\RequirePackage{setspaceenhanced}
+\setstretch{1.14}
+\else \fi
+\RequirePackage{natbib}								% natbib for citations
+
+% Math Packages
+\RequirePackage{amsfonts, amssymb, amsmath, amsthm}	% math syntax
+\RequirePackage{mathtools}							% math tools
+\RequirePackage{bbm}								% math bbm font
+\RequirePackage{mathrsfs}							% math rsfs font
+\RequirePackage{physics}							% for derivs and integrals
+\RequirePackage{cancel}								% cancel items
+\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+%\setmathfont{IBM Plex Math}							% ibm plex math
+%\RequirePackage{xcharter-math}
+
+\setmathfont{Latin Modern Math}
+\setmathfont[range=up]{IBMPlexSerif-Light.otf}
+\setmathfont[range=it]{IBMPlexSerif-LightItalic.otf}
+\setmathfont[range=]{Latin Modern Math}
+\setmathfont[range="2202]{texgyreschola-math.otf}	% manually set \partial from TeX Gyre Schola
+\setmathfontface\mathrm{IBMPlexSerif-Light.otf}
+
+\let\oldtext\text
+\renewcommand{\text}[1]{\oldtext{\rmfamily #1}}
+\renewcommand{\epsilon}{\varepsilon}
+
+
+% Include graphics, pdfs, code
+\RequirePackage{graphicx}							% load graphics
+\RequirePackage{svg}								% load graphics
+\RequirePackage{pdfpages}							% include pdf pages
+\RequirePackage{pgfpages}							% pdf page options
+\RequirePackage{pdflscape}							% landscape pages
+\RequirePackage{adjustbox}							% crop images, pdfs
+\RequirePackage{listings}							% include code
+\RequirePackage{lstlinebgrd}						% highlighting code
+
+% table options
+\RequirePackage{tabularx}							% tabular options
+\RequirePackage{makecell}							% multiline cells
+\RequirePackage{booktabs}							% pretty tables
+\RequirePackage{subcaption}							% subcaptions
+\RequirePackage{threeparttable}						% table notes
+
+\captionsetup[table]{skip=0pt, aboveskip=0pt, belowskip = 0pt,
+	position=top, labelfont=normalfont}
+
+\RequirePackage{float}								% fix up floats
+
+% Fix handling for subfigures (interaction of subcaption and threeparttable)
+\makeatletter
+	\AtBeginEnvironment{subfigure}{\let\@caption\caption@original@caption}
+	\AtBeginDocument{\let\caption@original@caption\@caption}
+\makeatother
+
+% Custom colors
+\definecolor{padajarorange} {HTML} {F47C44}
+\definecolor{padajarblue}   {HTML} {4473F4}
+\definecolor{padajarpurple} {HTML} {7E16BB}
+\definecolor{padajargreen}  {HTML} {2D9053}
+\definecolor{padajarbg}     {HTML}  {2C3E50}
+\definecolor{mygreen}       {rgb}  {0,0.6,0}
+\definecolor{mygray}        {rgb}  {0.5,0.5,0.5}
+\definecolor{mymauve}       {rgb}  {0.58,0,0.82}
+
+\colorlet{padajaralert}{padajarorange!90!black}
+
+%\definecolor{padajarbg}{HTML}{092F29}   103739  10391A  102730
+%2C3E50  29465B   36454F   2D4256
+
+
+% Paragraph formatting
+\setlength{\parindent}{0mm}
+\setlength{\parskip}  {2mm}
+
+% Stata format for listings
+% https://github.com/satejsoman/stata-lstlisting
+\lstdefinelanguage{Stata}{
+	% System commands
+    morekeywords=[1]{regress, reg, summarize, sum, display, di, generate, gen,
+    				 tabulate, tab, bysort, use, import, delimited, predict,
+    				 quietly, logit, probit, margins, test, estat, eststo,
+    				 esttab, vif, hettest, browse, graph, correlate, corr,
+    			 	 nocons},
+	% Reserved words
+	morekeywords=[2]{aggregate, array, boolean, break, byte, case, catch,
+					 class, colvector, complex, const, continue, default,
+					 delegate, delete, do, double, else, eltypedef, end, enum,
+					 explicit, export, external, float, for, friend, function,
+					 global, goto, if, inline, int, local, long, mata, matrix,
+					 namespace, new, numeric, NULL, operator, orgtypedef,
+					 pointer, polymorphic, pragma, private, protected, public,
+					 quad, real, return, rowvector, scalar, short, signed,
+					 static, strL, string, struct, super, switch, template,
+					 this, throw, transmorphic, try, typedef, typename, union,
+					 unsigned, using, vector, version, virtual, void, volatile,
+					 while},
+	% Keywords
+	morekeywords=[3]{forvalues, foreach, set},
+	% Date and time functions
+	morekeywords=[4]{bofd, Cdhms, Chms, Clock, clock, Cmdyhms, Cofc, cofC,
+					 Cofd, cofd, daily, date, day, dhms, dofb, dofC, dofc,
+					 dofh, dofm, dofq, dofw, dofy, dow, doy, halfyear,
+					 halfyearly, hh, hhC, hms, hofd, hours, mdy, mdyhms,
+					 minutes, mm, mmC, mofd, month, monthly, msofhours,
+					 msofminutes, msofseconds, qofd, quarter, quarterly,
+					 seconds, ss, ssC, tC, tc, td, th, tm, tq, tw, week, weekly,
+					 wofd, year, yearly, yh, ym, yofd, yq, yw},
+	% Mathematical functions
+	morekeywords=[5]{abs, ceil, cloglog, comb, digamma, exp, expm1, floor, int,
+					 invcloglog, invlogit, ln, ln1m, ln, ln1p, ln, lnfactorial,
+					 lngamma, log, log10, log1m, log1p, logit, max, min, mod,
+					 reldif, round, sign, sqrt, sum, trigamma, trunc},
+	% Matrix functions
+	morekeywords=[6]{cholesky, coleqnumb, colnfreeparms, colnumb, colsof, corr,
+					 det, diag, diag0cnt, el, get, hadamard, I, inv, invsym,
+					 issymmetric, J, matmissing, matuniform, mreldif, nullmat,
+					 roweqnumb, rownfreeparms, rownumb, rowsof, sweep, trace,
+					 vec, vecdiag},
+	% Programming functions
+	morekeywords=[7]{autocode, byteorder, c, _caller, chop, abs, clip, cond, e,
+					 fileexists, fileread, filereaderror, filewrite, float,
+					 fmtwidth, has_eprop, inlist, inrange, irecode, matrix,
+					 maxbyte, maxdouble, maxfloat, maxint, maxlong, mi, minbyte,
+					 mindouble, minfloat, minint, minlong, missing, r, recode,
+					 replay, return, s, scalar, smallestdouble},
+	% Random-number functions
+	morekeywords=[8]{rbeta, rbinomial, rcauchy, rchi2, rexponential, rgamma,
+					 rhypergeometric, rigaussian, rlaplace, rlogistic,
+					 rnbinomial, rnormal, rpoisson, rt, runiform, runiformint,
+					 rweibull, rweibullph},
+	% Selecting time-span functions
+	morekeywords=[9]{tin, twithin},
+	% Statistical functions
+	morekeywords=[10]{betaden, binomial, binomialp, binomialtail, binormal,
+					  cauchy, cauchyden, cauchytail, chi2, chi2den, chi2tail,
+					  dgammapda, dgammapdada, dgammapdadx, dgammapdx,
+					  dgammapdxdx, dunnettprob, exponential, exponentialden,
+					  exponentialtail, F, Fden, Ftail, gammaden, gammap,
+					  gammaptail, hypergeometric, hypergeometricp, ibeta,
+					  ibetatail, igaussian, igaussianden, igaussiantail,
+					  invbinomial, invbinomialtail, invcauchy, invcauchytail,
+					  invchi2, invchi2tail, invdunnettprob, invexponential,
+					  invexponentialtail, invF, invFtail, invgammap,
+					  invgammaptail, invibeta, invibetatail, invigaussian,
+					  invigaussiantail, invlaplace, invlaplacetail, invlogistic,
+					  invlogistictail, invnbinomial, invnbinomialtail, invnchi2,
+					  invnF, invnFtail, invnibeta, invnormal, invnt, invnttail,
+					  invpoisson, invpoissontail, invt, invttail, invtukeyprob,
+					  invweibull, invweibullph, invweibullphtail, invweibulltail,
+					  laplace, laplaceden, laplacetail, lncauchyden, lnigammaden,
+					  lnigaussianden, lniwishartden, lnlaplaceden, lnmvnormalden,
+					  lnnormal, lnnormalden, lnwishartden, logistic, logisticden,
+					  logistictail, nbetaden, nbinomial, nbinomialp,
+					  nbinomialtail, nchi2, nchi2den, nchi2tail, nF, nFden,
+					  nFtail, nibeta, normal, normalden, npnchi2, npnF, npnt, nt,
+					  ntden, nttail, poisson, poissonp, poissontail, t, tden,
+					  ttail, tukeyprob, weibull, weibullden, weibullph,
+					  weibullphden, weibullphtail, weibulltail,},
+	% String functions
+	morekeywords=[11]{abbrev, char, collatorlocale, collatorversion, indexnot,
+					  plural, plural, real, regexm, regexr, regexs, soundex,
+					  soundex_nara, strcat, strdup, string, strofreal, string,
+					  strofreal, stritrim, strlen, strlower, strltrim, strmatch,
+					  strofreal, strofreal, strpos, strproper, strreverse,
+					  strrpos, strrtrim, strtoname, strtrim, strupper, subinstr,
+					  subinword, substr, tobytes, uchar, udstrlen, udsubstr,
+					  uisdigit, uisletter, ustrcompare, ustrcompareex, ustrfix,
+					  ustrfrom, ustrinvalidcnt, ustrleft, ustrlen, ustrlower,
+					  ustrltrim, ustrnormalize, ustrpos, ustrregexm, ustrregexra,
+					  ustrregexrf, ustrregexs, ustrreverse, ustrright, ustrrpos,
+					  ustrrtrim, ustrsortkey, ustrsortkeyex, ustrtitle, ustrto,
+					  ustrtohex, ustrtoname, ustrtrim, ustrunescape, ustrupper,
+					  ustrword, ustrwordcount, usubinstr, usubstr, word,
+					  wordbreaklocale, worcount,},
+	% Trig functions
+	morekeywords=[12]{acos, acosh, asin, asinh, atan, atanh, cos, cosh, sin,
+					  sinh, tan, tanh,},
+	morecomment=[l]{//},
+	% morecomment=[l]{*},  // `*` maybe used as multiply operator. So use `//` as line comment.
+	morecomment=[s]{/*}{*/},
+	% local/global definitions
+	moredelim=[s][\color{padajarorange!75!black}]{\$\{}{\}},
+	moredelim=[s][\color{padajarorange!75!black}]{`}{'},
+	% string definitions
+	morestring=[bd]",
+	morestring=[s]{`"}{"'},
+%	 morestring=[d]{\\`},
+	% morestring=[b]{'},
+	sensitive=true,
+}
+
+% listing settings
+\lstset{
+	backgroundcolor=\color{white},  	% background color
+	basicstyle=\footnotesize\ttfamily,  % font size
+	belowskip=0pt,
+	breakatwhitespace=true,	         	% automatic breaks only at whitespace
+	breaklines=true,                 	% sets automatic line breaking
+	captionpos=t,                    	% sets the caption-position to bottom
+	commentstyle=\color{padajargreen},  % comment style
+	deletekeywords={...},            	% if delete keywords
+	escapeinside={\%*}{*)},          	% if you want to add LaTeX within your code
+	extendedchars=true,              	% lets you use non-ASCII characters
+										% 	for 8-bits encodings only, does
+										% 	not work with UTF-8
+	firstnumber=1,                      % start line enumeration with line 1
+	frame=single,	                  	% adds a frame around the code
+	framexleftmargin = 3pt,				% left margin
+	framexrightmargin = 3pt,			% right margin
+	keepspaces=true,                 	% keeps spaces in text, useful for keeping
+										%	indentation of code (possibly needs
+										%	columns=flexible)
+	keywordstyle=\color{padajarblue},   % keyword style
+	language=Stata,                  	% default code language
+	morekeywords={*,...},            	% if add more keywords to the set
+	numbers=left,                    	% where to put the line-numbers;
+										% 	possible values are (none, left, right)
+	numbersep=8pt,                   	% dist between line-numbers and code
+	numberstyle=\color{mygray}, 		% line number style. 	USED TO HAVE TINY
+	rulecolor=\color{black},         	% if not set, the frame-color may
+										% 	be changed on line-breaks within
+										%	not-black text (e.g. comments)
+	showspaces=false,               	% show spaces everywhere adding particular
+										%	 underscores; it overrides
+										% 	'showstringspaces'
+	showstringspaces=false,          	% underline spaces within strings only
+	showtabs=false,                  	% show tabs within strings adding
+										% 	particular underscores
+	stepnumber=1,                    	% the step between two line-numbers. If
+										%	 it's 1, each line will be numbered
+	stringstyle=\color{padajarpurple},  % string literal style
+	tabsize=4,	                  		% default tabsize of 4 spaces
+	%	title=\lstname,                 % show the filename of files included with
+										% 	\lstinputlisting; also try caption
+										% 	instead of title
+	xleftmargin=0.25cm					% left margin
+}
+
+% list of math shortcuts
+\newcommand{\eps}{\varepsilon}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\V}{\mathbb{V}}
+\newcommand{\indic}{\mathbbm{1}}
+
+\AtBeginDocument{
+	\renewcommand{\epsilon}{\varepsilon}
+}
+
+\endinput

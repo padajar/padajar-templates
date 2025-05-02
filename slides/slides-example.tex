@@ -1,0 +1,107 @@
+% !TEX program = xelatex
+
+
+\documentclass[aspectratio=169, handout, sectionslides]{padajar-slides} % handout, notes
+
+
+\title{a slide template}
+\subtitle{the \texttt{padajar-slides} class}
+\date{\today}
+\author{paolo adajar (they/them) \\ \href{mailto:paoloadajar@mit.edu}{paoloadajar@mit.edu}}
+\institute{v1.0}
+
+%\usepackage{tikz}
+%\usepackage{istgame}
+
+% \usepackage{pgfpages}
+% \setbeameroption{show notes on second screen}
+
+%\beamerdefaultoverlayspecification{<+->}
+
+% bespoke commands: \graycitep, \btLstHL<overlay spec>{range list}
+
+\begin{document}
+
+\maketitle
+
+% \begin{frame}[noframenumbering, plain]{Outline}
+% \tableofcontents
+% \end{frame}
+
+\section{example slides}
+
+\begin{frame}[fragile]{The best code is self-commenting}
+\begin{lstlisting}[language=Stata,
+linebackgroundcolor={
+	\btLstHL{1, 13}}
+]
+// Generate summary statistics (Table 1)
+use "${cleandata}/district_policy_merged_all.dta"
+
+assert               num_charter >= 0
+gen    has_charter = num_charter >  0
+
+local covariates mn_all_math mn_all_ela                   	///
+                 num_charter schools totenrl100 sesall    	///
+                 urban suburb town rural                  	///
+                 perwht perblk perhsp perasn perind
+
+eststo clear
+eststo: estpost summarize `covariates'                , detail
+eststo: estpost summarize `covariates' if  has_charter, detail
+eststo: estpost summarize `covariates' if !has_charter, detail \end{lstlisting}
+\end{frame}
+
+\begin{frame}[standout, plain]
+	\raggedright
+	guiding philosophy: \\
+	you want people to \alert{understand}. \\
+	design with that in mind.
+\end{frame}
+
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+
+\begin{frame}{Engagement is strongest predictor of take-up}
+	\begin{center}
+			\begin{table}[htbp]\centering
+				\small\caption{Access (\%) by selection criteria used}
+				\footnotesize\begin{tabular}{l*{5}{c}}
+%					\hline\hline
+					&\multicolumn{1}{c}{(1)}         &\multicolumn{1}{c}{(2)}         &\multicolumn{1}{c}{(3)}         &\multicolumn{1}{c}{(4)}         &\multicolumn{1}{c}{(5)}         \\
+					\hline
+					Selected w/ Admin&      0.0678         &                     &                     &                     &      -1.625         \\
+					&     (3.743)         &                     &                     &                     &     (3.920)         \\
+					Selected w/ Endline&                     &       1.233         &                     &                     &      -1.073         \\
+					&                     &     (3.492)         &                     &                     &     (3.553)         \\
+					\color{padajaralert}Selected w/ Engagement&                     &                     &       \color{padajaralert}8.019\sym{*}  &                     &       \color{padajaralert}6.645         \\
+					&                     &                     &     \color{padajaralert}(3.391)         &                     &     \color{padajaralert}(3.446)         \\
+					Selected w/ Grit&                     &                     &                     &      -9.489         &      -7.860         \\
+					&                     &                     &                     &     (7.068)         &     (8.326)         \\
+					Cons.       &       61.84\sym{***}&       61.14\sym{***}&       58.07\sym{***}&       62.77\sym{***}&       61.14\sym{***}\\
+					&     (3.151)         &     (2.680)         &     (2.347)         &     (1.750)         &     (4.727)         \\
+					\hline
+					N     &        1464         &        1464         &        1464         &        1464         &        1464         \\
+%					\hline\hline
+					\multicolumn{6}{l}{\tiny Standard errors in parentheses. \sym{*}p\textless0.05, \sym{**}p\textless0.01, \sym{***}p\textless0.001.}\\
+				\end{tabular}
+			\end{table}
+	\end{center}
+\end{frame}
+
+\begin{frame}{What closes the achievement gaps for top students?}
+	\begin{itemize}
+		\item Access to mentors greatly enhances participation, performance \graycitep{es2016, c2024}
+		\item Intensive, targeted 6-week program at an elite STEM university shifted students towards elite schools (12pp increase in BA attainment), with expected earnings effects of 3-15\% \graycitep{chr2024}
+		\item Self-paced classes and tutoring have proven useful for helping students across the ability distribution, and potentially highly scalable \graycitep{cf2021, msg2019, kahm1997}
+	\end{itemize}
+\end{frame}
+
+\renewcommand{\bibsection}{}
+
+\begin{frame}[allowframebreaks]{Works cited}
+	\footnotesize
+	\bibliographystyle{econ}
+	\bibliography{math-talent-bib.bib}
+\end{frame}
+
+\end{document}

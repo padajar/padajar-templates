@@ -1,0 +1,243 @@
+% !TEX program = xelatex
+
+
+\documentclass[answers, reflections, 11pt]{padajar-pset}
+
+
+% Required document information
+\name         {Paolo Adajar}
+\email        {paoloadajar@mit.edu}
+\date         {\today}
+\classnum     {14.XX}
+\classname    {Class Name}
+\assignment   {Assignment Name}
+\pdftitle     {padajar pset example}
+
+% \professors, \collaborators, can be
+%		- undefined (and will not be printed)
+%		- have one name (and will be singular)
+% 		- have many names (and will be plural)
+
+\professors   {Professor 1}{Professor 2}
+\collaborators{Alice P. Hacker}{Ben Bitdiddle}
+
+\usepackage{lipsum}
+
+\begin{document}
+
+	\begin{questions}
+	\titledquestion{Example: 14.04 Fall 2020, PS1, \#1.}
+
+	This is a question from when I took 14.04, Intermediate Macroeconomics, with Rob Townsend in fall 2021 (my senior spring).
+
+	\begin{parts}
+		\part[3] Let $X = \mathbb{R}^2_+$ and there be two points $x = (x_1, x_2)$, $y = (y_1, y_2)$.
+
+		Suppose $x \succeq y$ if $x_1 > y_1$ or if $x_1 = y_1$ and $x_2 \ge y_2$.
+
+		Is the preference relation complete? Transitive? Why or why not?
+
+
+		\begin{solution} This preference relation \textbf{is complete}. If $x_1 > y_1$, then $x \succ y$. If $y_1 > x_1$, then $y \succ x$. Else, $x_1 = y_1$; in this case, if $x_2 > y_2$ we have that $x \succ y$, if $y_2 > x_2$ we have that $y \succ x$, and if $x_2 = y_2$ then $x \sim y$. In all cases, we have that exactly one of $\{x \succ y, \, x \prec y, \, x \sim y \}$ is true.
+
+			This preference relation \textbf{is transitive}. Suppose $x \succeq y \succeq z$; then, we have that $x_1 \ge y_1 \ge z_1$. If all inequalities are strict, then $x\succeq z$ and we are done. If both are binding, then we must also have $x_2 \ge y_2 \ge z_2$, and so $x \succeq z$. The remaining two cases where one is strict and one is binding follow similarly.
+		\end{solution}
+		\begin{reflection}
+			Intuitively, one can imagine first comparing the ``tens" place and then comparing the ``ones" place.
+
+			This is the lexicographic preference ordering; I personally think that it is a useful preference ordering to help build intuition behind the different properties of well-behaved preferences.
+
+			(I'm going to stop with the ``real" reflections here, as I did this pset far too long ago.)
+		\end{reflection}
+	\part[4]
+
+		John has preferences over consumption bundles $(A,B) \in \mathbb{R}^2_+$ characterized
+		by utility function $U(A, B)=A^\frac{1}{3} B^\frac{2}{3}$. Show that John's preferences satisfy
+		strict monotonicity, local non-satiation, strict convexity, and continuity.
+
+	\begin{solution}
+		We verify all four properties separately.
+		\begin{itemize}
+			\item \textbf{Monotonicity}: Note that at any $X^* = (A^*, B^*)$ with $A^*,B^* > 0$,
+			\begin{align*}
+				\left.\pdv{U}{A}\right|_{X^*} &= \left. \frac13 \left(\frac{B}{A}\right)^{2/3}\right|_{X^*} > 0 \\
+				\left.\pdv{U}{B}\right|_{X^*} &= \left. \frac23 \left(\frac{A}{B}\right)^{1/3}\right|_{X^*} > 0
+			\end{align*}
+			and thus $U$ is monotonic in $A$ and $B$.
+			\item \textbf{Non-satiation}: Note that at any $X^* = (A^*, B^*)$ with $A^*,B^* > 0$, note that
+			\[
+			U\left(A^* + \frac{\varepsilon}{2}, B^*\right) > U(A^*, B^*)
+			\]
+			and so you can always improve utility within an $\varepsilon$-ball.
+			\item \textbf{Convexity}: Note that the marginal rate of substitution $(MRS)$ between $A$ and $B$ is given by
+			\[
+			\frac{\partial U / \partial A}{\partial U / \partial B 	}= \frac{\frac13 \left( \frac{B}{A}\right)^{2/3}}{\frac23 \left(\frac{A}{B}\right)^{1/3}} = \frac{B}{2A}
+			\]
+			In addition, we have that
+			\[
+			\pdv{MRS}{A} = -\frac{B}{2A^2} < 0
+			\]
+			and so the $MRS$ is decreasing in the quantity of $A$. A similar calculation shows that the $MRS$ of $B$ and $A$ is decreasing in $B$; thus, the convex indifference curves are strictly convex.
+			\item \textbf{Continuity.} Consider a fixed $X^* = (A^*, B^*)$. Note that for $X'$ within a $\delta$-ball around $X$, we have that
+			\[
+			U(X') > U(A^* - \delta, B^* - \delta)
+			\]
+			Let $\varepsilon = U(A^*, B^*) - U(A^* - \delta, B^* - \delta)$. The value of $\varepsilon$ is finite, as $X^*$ is fixed. As $\delta \rightarrow 0$, $\varepsilon \rightarrow 0$ because $X' \rightarrow X^*$.
+
+			So for any $\varepsilon > 0$, we can choose a $\delta$ such that all points in the $\delta$-ball around $X^*$ are at most $\epsilon$ less than the utility of $X^*$. For any $x, y, x \succ y$, choosing an appropriate $\delta$ (with $\varepsilon = U(x) - U(y)$) will guarantee that all elements in the $\delta$-ball around $x$ will still be preferred to $y$.
+		\end{itemize}
+	\end{solution}
+	\begin{reflection}
+		\lipsum[1]
+	\end{reflection}
+
+	\part
+		Consider the following constrained maximization problem using the utility
+		function introduced in part (b):
+		\begin{alignat*}{2}
+			\max \; & \quad &  U(A, B) &= A^\frac{1}{3} B^\frac{2}{3} \\
+			\text{s.t.} \; &&  p_AA + p_BB &\le I \\
+			\; && A, B &\ge 0
+		\end{alignat*}
+		where $p_A, p_B, I > 0$. Let $A^*,B^*$ denote the solution to the above problem.
+
+		\begin{subparts}
+			\subpart[2]
+				Can we ever have $A^* = 0$ or $B^* = 0$? Why or why not?
+			\begin{solution}
+				No, we must have $A^*, B^* > 0$; this is because for any $I > 0$, choosing $A^*$ or $B^* = 0$ means that $U =0$, while consuming $\varepsilon >0$ of each will have positive utility.
+			\end{solution}
+			\begin{reflection}
+				As a quick note, the reflection and solution environment change width for subproblems.
+
+				\lipsum[2]
+
+			\end{reflection}
+
+		\subpart[2]
+				Can we ever have $p_AA^* + p_BB^* < I$? Why or why not?
+			\begin{solution} No, we must have $p_A A^* + p_B B^* = I$. Consider some $(A, B)$ such that it costs $<I$. Then, consider $(\overline{A},B)$ such that $p_A \overline{A} + p_B B = I$; this allocation and has $\overline{A} > A$. Note $U(\overline{A}, B) > U(A,B)$ and so the individual would always strictly prefer this bundle. Thus, the budget must always be fully utilized. \end{solution}
+			\begin{reflection}
+				\lipsum[3]
+			\end{reflection}
+
+		\subpart[4]
+				Set up the consumer's Lagrangian and find the first-order conditions.
+				How do you know that these first-order conditions are sufficient to
+				characterize the solution to the consumer's problem? For what values
+				of $p_A, p_B$ will the consumer consume twice as much $A$ as $B$?
+			\begin{solution} The consumer's Lagrangian is given by
+				\[
+				\mathscr{L} = A^{\frac13}B^{\frac23} + \lambda (I - p_A A - p_BB)
+				\]
+				We need not incorporate constraints on the non-negativity of each variable because per part (a), the solution is interior. Part (b) tells us the maximizer will be on the budget constraint. Further, because $U$ is quasi-concave and the constraints are convex, we will return the global maximizer.
+
+				Taking derivatives, we have
+				\begin{align*}
+					\pdv{\mathscr{L}}{A} & = \frac13 \left(\frac{B}{A}\right)^{\frac23} - \lambda p_A =0 \\
+					\pdv{\mathscr{L}}{B} & = \frac23 \left(\frac{A}{B}\right)^{\frac13} - \lambda p_B =0 \\
+					\pdv{\mathscr{L}}{\lambda} & = I - p_A A - p_BB = 0
+				\end{align*}
+				Solving the first and second equations for $\lambda$, we get
+				\[
+				\lambda = \frac13 \frac{1}{p_A}\left(\frac{B}{A}\right)^{\frac23} = \frac23 \frac{1}{p_B} \left(\frac{A}{B}\right)^{\frac13} \iff p_B B = 2p_A A
+				\]
+				indicating that the consumer will spend twice their income on $B$ than they will on $A$.
+
+				If we desire $A = 2B$, we must then have that $p_B = 4 p_A$.
+			\end{solution}
+			\begin{reflection}
+				\lipsum[4]
+			\end{reflection}
+		\end{subparts}
+	\end{parts}
+
+	\titledquestion{Example: 14.381 Fall 2021 PS1, \#2.}
+
+	This problem set question is from 14.381, Statistical Methods in Economics, taken with Whitney Newey.
+
+	Consider the gasoline demand data that is provided on Canvas and two OLS regressions (all in levels, not logs) for that data:
+	\begin{enumerate}[label=\roman*)]
+		\item the OLS regression of the gasoline purchases on a constant, price, and income
+		\item the OLS regression of the level of gasoline purchases on a constant, price, income, and covariates consisting of the average age of drivers in the household, the number of drivers in the household, and the dummy variable for the availability of public transport.
+	\end{enumerate}
+	Assume that there is no heteroskedasticity or autocorrelation.
+
+	\begin{parts}
+	\part[3] Give Tables of OLS estimates and standard errors for all the coefficients for both regressions i) and ii), assuming there is no heteroskedasticity or autocorrelation.
+	\begin{solution}
+		We use the following code:
+		\begin{lstlisting}[language=Stata]
+import delimited "Gasoline Data.csv"
+
+rename (v1 v2 v3 v4 v5 v6 v7 v8 v9 v10)									///
+	   (state log_quantity log_price log_income dist_gulf_of_mexico		///
+		log_drivers public_transit mean_age_drivers log_price_cents		///
+		state_gas_tax)
+
+foreach v of varlist quantity price income drivers {
+	gen `v' = exp(log_`v')
+}
+
+eststo clear
+eststo: reg quantity price income
+eststo: reg quantity price income drivers mean_age_drivers public_transit
+
+esttab                 , se
+esttab using ps1-2a.tex, se replace\end{lstlisting}
+
+		which yields the following table:
+		\begin{center}
+			\small{
+				\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+				\begin{tabular}{l*{2}{c}}
+					\hline\hline
+					&\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}\\
+					&\multicolumn{1}{c}{quantity}&\multicolumn{1}{c}{quantity}\\
+					\hline
+					price       &      -3.359\sym{***}&      -2.500\sym{*}  \\
+					&     (1.006)         &     (0.987)         \\
+					[1em]
+					income      &       0.000\sym{***}&       0.000\sym{***}\\
+					&     (0.000)         &     (0.000)         \\
+					[1em]
+					drivers     &                     &       2.241\sym{***}\\
+					&                     &     (0.107)         \\
+					[1em]
+					mean\_age\_drivers&                     &      -0.023\sym{***}\\
+					&                     &     (0.005)         \\
+					[1em]
+					public\_transit&                     &      -0.643\sym{***}\\
+					&                     &     (0.185)         \\
+					[1em]
+					\_cons      &       7.856\sym{***}&       3.986\sym{**} \\
+					&     (1.336)         &     (1.366)         \\
+					\hline
+					\(N\)       &        8908         &        8908         \\
+					\hline\hline
+					\multicolumn{3}{l}{\footnotesize Standard errors in parentheses}\\
+					\multicolumn{3}{l}{\footnotesize \sym{*} \(p<0.05\), \sym{**} \(p<0.01\), \sym{***} \(p<0.001\)}\\
+				\end{tabular}
+			}
+		\end{center}
+	\end{solution}
+	\part[3]
+		Do an $F$-test of the null hypothesis that all the covariates have zero coefficients.
+	\begin{solution}
+		Using
+		\begin{lstlisting}[language=Stata]
+test drivers mean_age_drivers public_transit \end{lstlisting}
+		after the above command yields $F(3, 8902) = 201.24$, with a $p$-value of 0.000. This indicates that the covariates are significantly distinct from 0 at the 5\% level.
+	\end{solution}
+	\part[4]
+		Do a $t$-test of the null hypothesis that the short regression (a) price coefficient is the same as the long regression (b) price coefficient. You may assume that the variance of the difference of the long and short regression coefficients is the difference of their variances. What do you conclude from this test? Does this test lead to a different conclusion than the test in (b)?
+	\begin{solution}
+		Note that we can approximate this with a $z$-test because of the size of the sample, which gives a difference of 0.859 and a standard error of $\sqrt{{1.006}^2 - 0.987^2} = 0.195$. This gives a $z$-value of 4.414, and a $p$-value of 0.000, indicating that the two coefficients on price are statistically distinct at the 5\% level.
+
+		This is the conclusion we would expect from (b); as the coefficients had significant impacts on the regression, we expect them to change the size of the coefficient  on \texttt{price}.
+	\end{solution}
+
+\end{parts}
+\end{questions}
+
+\end{document}
