@@ -1,15 +1,15 @@
 % Copyright 2025 Paolo Adajar (padajar.com, paoloadajar@mit.edu)
 
 % Permission is hereby granted, free of charge, to any person obtaining a copy
-% 	of this software and associated documentation files (the "Software"), to 
-% 	deal in the Software without restriction, including without limitation the 
-% 	rights to use, copy, modify, merge, publish, distribute, sublicense, and/or 
-% 	sell copies of the Software, and to permit persons to whom the Software is 
+% 	of this software and associated documentation files (the "Software"), to
+% 	deal in the Software without restriction, including without limitation the
+% 	rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+% 	sell copies of the Software, and to permit persons to whom the Software is
 % 	furnished to do so, subject to the following conditions:
 %
 % 	The above copyright notice and this permission notice shall be included in
 %	all copies or substantial portions of the Software.
-% 
+%
 % 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 % 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 % 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -90,11 +90,36 @@
 \newtheorem{example}[theorem]{Example}
 
 
+% \selfnote, bold and purple
+\newcommand{\selfnote}[1]{{\color{padajarpurple}{\bfseries #1}}}
+
+% \Selfnote, bold + purple (paragraph)
+\newenvironment{Selfnote}{%
+	\par
+	\color{padajarpurple}%
+	\bfseries
+}
+{%
+	\par
+}
+
+% \alert, bold + orange
+\newcommand{\alert}[1]{{\color{padajaralert}{\bfseries #1}}}
+% \Alert, bold + orange
+\newenvironment{Alert}{%
+	\par
+	\color{padajaralert}%
+	\bfseries
+}
+{%
+	\par
+}
+
 \AtBeginDocument{
 	% Make internal variables accessible to hyperref
 	\global\let\name=\name
 	\global\let\pdftitle=\pdftitle
-	
+
 	\hypersetup{
 		pdfauthor  = {\@name},
 		pdftitle   = {\@pdftitle},
@@ -114,8 +139,8 @@
 	\fancyfoot[L]{\small\@date}
 	\fancyfoot[R]{\small\thepage}
 
-	\thispagestyle{firstpage}	
-	
+	\thispagestyle{firstpage}
+
 	\setlength{\parskip}{11pt}
 %	\setlist[1]{before=\vspace{-11pt}, after=\vspace{-11pt}}
 
