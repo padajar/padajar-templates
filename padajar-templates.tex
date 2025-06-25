@@ -5,7 +5,7 @@
 % Required document information
 \name         {paolo adajar}
 \email        {paoloadajar@mit.edu}
-\memonote	  {v1.0.0}					% in practice, often used for who the note is going to
+\memonote	  {v1.1.0}					% in practice, often used for who the note is going to
 \date         {\today}
 \pdftitle     {test}
 
@@ -47,9 +47,9 @@ All \texttt{padajar-templates} load the package \texttt{padajar-defaults}. This 
 	\[
 	\Phi(x) = \int_{-\infty}^x \frac{e^{-t^2/2}}{\sqrt{2\pi}} \dd{t}.
 	\]
-	Mono font is set to IBM Plex Mono. All fonts are set to user a lighter weight than the default.
+	Mono font is set to IBM Plex Mono (\texttt{like so}). All fonts are set to user a lighter weight than the default.
 
-	Note that because the \texttt{fontspec} package is used, to use this package (and any below templates), \textbf{you must} use XeLaTeX or LuaLaTeX. (For me, compilation with the former has been slightly faster.)
+	Note that because the \texttt{fontspec} package is used, to use this package (and any below templates), \textbf{you must} use XeLaTeX or LuaLaTeX. (For me, compilation with the former has been slightly faster.) You can always set this by adding ``\texttt{\symbol{37} !TEX program = xelatex}" (without quotes) to the top of your document (i.e., before \ttslash{documentclass}).
 	\item A host of packages loaded by default:
 	\begin{itemize}
 		\item for math: \texttt{amsmath}, \texttt{amsthm}, \texttt{physics}, \texttt{bbm}\dots
@@ -87,6 +87,8 @@ This is the simplest template of the three, and is the one that you're currently
 
 \begin{itemize}
 	\item Fancy headers and footers, which take information from \ttslash{name}, \ttslash{email}, \ttslash{date}, \ttslash{memotitle}, and \ttslash{memonote}.
+	\item Commands for adding in-line self-notes and alerts, which I use for to-dos and other comments. these commands are \ttslash{selfnote} (\selfnote{purple and bold}) and \ttslash{alert} (\alert{orange and bold}).
+	\item Analagously, the environments \ttslash{Selfnote} and \ttslash{Alert} can contain multi-paragraph entries with the same formatting.
 \end{itemize}
 
 \dots and that's really it. The base setup of this class isn't too far different from the \texttt{article} class. It's just meant to be a clean baseline template so I don't always have to futz around with the same imports and options that I always do.
@@ -134,7 +136,7 @@ This class is based on the \texttt{moloch} theme for the \texttt{beamer} class, 
 Key features include:
 \begin{itemize}
 	\item Navigation bubbles with section titles on the bottom of slides
-	\item The \texttt{[sectionslides]} argument, which, when called, will add a navigation slide at the start of each section.
+	\item An optional argument for the class, \texttt{[sectionslides]}, which adds a navigation slide at the start of each section.
 	\item \ttslash{graycitep}, which will cite bibliography items like \ttslash{citep} from the \texttt{natbib} package, but will insert citations into smaller, gray text.
 	\item \ttslash{btLstHL}, which can highlight specific lines in an \texttt{lstlisting} environment by using the option	\texttt{linebackgroundcolor={\textbackslash btLstHL<overlay spec>\{range list\}}}
 	\item A default 16:9 aspect ratio, the objectively correct aspect ratio for presentations.
@@ -153,7 +155,7 @@ This set of files is \textit{far} from perfect right now. Some high-priority iss
 		\item When the body text is sans-serif, the math text also becomes sans-serif. To change it back to serif, I use \ttslash{renewcommand\{\textbackslash text\}[1]\{\textbackslash oldtext\{\textbackslash rmfamily \#1\}}. Yuck.
 		\item Yeah, yeah, I know I should fix \ttslash{epsilon} because \emph{some} people want to use it.
 		\item Refactor the code, particularly looking for any repeated code and cleaning up the margins/parskip/etc. formatting; that in particular has become a bit of a jumble.
-		\item Nice code for coloring specific rows/cells of a table? Perhaps something like \href{https://tex.stackexchange.com/questions/213301/efficiently-colouring-block-of-table-cells}{here}.
+		\item Nice code for coloring specific rows/cells of a table? Perhaps something like \href{https://tex.stackexchange.com/questions/213301/efficiently-colouring-block-of-table-cells}{here} or \href{https://tex.stackexchange.com/questions/740514/changing-cell-text-color-for-a-table-included-with-input}{here}.
 	\end{itemize}
 \end{itemize}
 
@@ -185,7 +187,8 @@ Conversely, here are some things that I explicitly \textit{don't} plan on doing 
 
 
 \begin{tabular}{T p{\textwidth-1.75in}}
-	1.0.0 (2025-03-30) & first creation of the memo, pset, and slides classes, each importing the default package  \\
+	1.1.0 (2025-06-25) &  add \ttslash{alert} and \ttslash{selfnote}, minor fixes\\
+	1.0.0 (2025-03-30) & first creation of the \texttt{padajar-memo}, \texttt{padajar-pset}, and \texttt{padajar-slides} classes, each importing the \texttt{padajar-defaults} package  \\
 	0.1.0 (2021-07-19) & initial creation of what would become these classes: a series of \LaTeX{} commands accessed with \ttslash{input\{paolo-pset.tex\}}
 \end{tabular}
 
