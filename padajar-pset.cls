@@ -48,13 +48,14 @@
 
 % Define commands to set document information
 \makeatletter
-\def\@classnum  {Class Number}
-\def\@classname {Class Name}
-\def\@assignment{Assignment Name}
-\def\@name      {Student Name}
-\def\@email     {email@me.com}
-\def\@pdftitle  {Class Assignment}
-\def\@date      {\today}
+\def\@classnum  {\symbol{92}classnum}
+\def\@classname {\symbol{92}classname}
+\def\@assignment{\symbol{92}assignment}
+\def\@name      {\symbol{92}name}
+\def\@email     {\symbol{92}email}
+\def\@pdftitle  {\@classnum: \@assignment}
+\def\@date      {\symbol{92}date (usually \symbol{92}today)}
+
 
 % Define user-friendly interface
 \newcommand  {\classnum}  [1]{\def\@classnum  {#1}}
@@ -136,15 +137,15 @@
 					}
 				}
 {\parbox[t]{0.2\textwidth}{}}
-{\parbox[t]{0.3\textwidth}{\small{\hfill \thepage\ of \numpages}}}
+{\parbox[t]{0.3\textwidth}{\small{\hfill Page \thepage\ of \numpages}}}
 \firstpageheadrule
 \firstpagefootrule
 
 
-\runningheader{\@date}
+\runningheader{\@classnum: \@assignment}
 			  {}
 			  {\@name}
-\runningfooter{\small {\@classnum: \@assignment}}
+\runningfooter{\small {\@date}}
 			  {}
 			  {\small{Page \thepage\ of \numpages}}
 
@@ -152,7 +153,7 @@
 \runningfootrule
 
 \setlength{\parskip}{11pt}
-\extraheadheight[22pt]{0pt}
+\extraheadheight[27.5pt]{0pt}
 \extrafootheight{-11pt}
 \setlength{\headsep}{6pt}
 \setlength{\footskip}{6pt}

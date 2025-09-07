@@ -1,4 +1,4 @@
-% Copyright 2025 Paolo Adajar (padajar.com, paoloadajar@mit.edu)
+% Copyright 2025 Phi Adajar (padajar.com, phiadajar@mit.edu)
 
 % Permission is hereby granted, free of charge, to any person obtaining a copy
 % 	of this software and associated documentation files (the "Software"), to
@@ -42,12 +42,13 @@
 
 % Define commands to set document information
 \makeatletter
-\def\@name      {Name}
-\def\@email     {email@me.com}
+\def\@memotitle {\symbol{92}memotitle}
+\def\@memonote  {\symbol{92}memonote}
+\def\@name      {\symbol{92}name}
+\def\@email     {\symbol{92}email}
 \def\@pdftitle  {\@memotitle}
-\def\@date      {\today}
-\def\@memotitle {Memo Title}
-\def\@memonote	{Memo Note}
+\def\@date      {\symbol{92}date (usually \symbol{92}today)}
+
 
 % Define user-friendly interface
 \newcommand  {\name}      [1]{\def\@name      {#1}}
@@ -64,10 +65,13 @@
 \titlespacing\subsection{0pt}{0pt plus 2pt minus 0pt}{0pt plus 2pt minus 0pt}
 \titlespacing\subsubsection{0pt}{0pt plus 2pt minus 0pt}{0pt plus 2pt minus 0pt}
 
+
 \fancypagestyle{firstpage} {
 \fancyhf{}
-\setlength{\headsep}{22pt}
-\setlength{\footskip}{11pt}
+\setlength{\headheight}{22.01pt}
+\setlength{\headsep}{11pt}
+\setlength{\footskip}{22.3pt}
+\addtolength{\textheight}{-11.31pt}
 \fancyhead[R]{\@name \\ \href{mailto:\@email}{\@email}}
 \fancyhead[L]{\@memotitle \\ \@memonote, \@date}
 
@@ -138,12 +142,12 @@
 	\fancyhead[L]{\@memotitle}
 	\fancyfoot[L]{\small\@date}
 	\fancyfoot[R]{\small\thepage}
+	\addtolength{\textheight}{11pt}
 
 	\thispagestyle{firstpage}
 
-	\setlength{\parskip}{11pt}
+	\setlength{\parskip}{11.31pt}
 %	\setlist[1]{before=\vspace{-11pt}, after=\vspace{-11pt}}
-
 }
 \makeatother
 \RequirePackage{hyperref}
