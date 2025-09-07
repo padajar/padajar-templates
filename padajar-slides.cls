@@ -1,4 +1,4 @@
-% Copyright 2025 Paolo Adajar (padajar.com, paoloadajar@mit.edu)
+% Copyright 2025 Phi Adajar (padajar.com, phipadajar@mit.edu)
 
 % Permission is hereby granted, free of charge, to any person obtaining a copy
 % 	of this software and associated documentation files (the "Software"), to
