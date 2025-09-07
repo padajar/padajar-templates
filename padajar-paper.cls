@@ -51,10 +51,6 @@
 \def\@papershortauthors {\symbol{92}papershortauthors}
 \def\@paperabstract     {\symbol{92}paperabstract (optional)}
 
-%\def\@name            {\symbol{92}name}
-%\def\@email           {\symbol{92}email}
-%\def\@pdftitle        {\@memotitle}
-%\def\@date            {\symbol{92}date (usually \symbol{92}today)}
 
 \newcommand  {\papertitle}        [1]{\def\@papertitle        {#1}}
 \newcommand  {\papersubtitle}     [1]{\def\@papersubtitle     {#1}}

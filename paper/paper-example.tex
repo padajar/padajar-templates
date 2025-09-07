@@ -1,0 +1,47 @@
+% !TEX program = xelatex
+
+\documentclass[11pt]{padajar-paper}
+
+\papertitle{It's a bird! It's a plane!}
+\papersubtitle{It's an example document using \texttt{padajar-paper}!}
+
+\date{\today}
+
+\author[*]{Alice P. Hacker}
+\author[*]{Ben Bitdiddle}
+\author[**]{John Q. Smith}
+
+\affil[*]{MIT}
+\affil[**]{Harvard}
+
+\paperthanks{We kindly thank many people for making this document possible.}
+
+
+\paperabstract{If this paper had an abstract, here is approximately where it would go. For now, I'm just typing some sentences to fill up the space that's present in this area without it looking too awkward. However, at some point I'm going to run out of test words, and it's just going to look awkward. That's OK, though --- I've accepted that it will happen.}
+
+\usepackage[english]{babel}
+\usepackage[math]{blindtext}
+\usepackage{lipsum}
+
+\papershorttitle{It's a Bird!}
+
+\papershortauthors{Hacker, Bitdiddle, and Smith}
+
+
+\begin{document}
+	
+	\makepapertitle
+	
+
+		\texttt{padajar-paper} is a paper template made by Phi Adajar, originally made in Summer 2025. This template will be used for brief writing up full papers.
+
+		Much like the \texttt{padajar-memo} class, it has very minimal features. Just a nice clean setup.
+
+		\Blindtext[1]
+		\lipsum[1-2]
+		\Blindtext[1]
+		\lipsum[3-4]
+		\Blindtext[1]
+		\lipsum[5-7]
+
+\end{document}
