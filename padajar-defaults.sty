@@ -1,4 +1,4 @@
-% Copyright 2025 Paolo Adajar (padajar.com, paoloadajar@mit.edu)
+% Copyright 2025 Phi Adajar (padajar.com, phiadajar@mit.edu)
 
 % Permission is hereby granted, free of charge, to any person obtaining a copy
 % 	of this software and associated documentation files (the "Software"), to
@@ -36,11 +36,11 @@
 
 
 % suppress some warnings
-\RequirePackage{silence}
-\WarningFilter{fancyhdr}{\string\headheight\space is too}
-\WarningFilter{fancyhdr}{\string\footskip\space is too small}
-\WarningFilter{unicode-math}{original `unicode-math' definition}
-\WarningsOff
+%\RequirePackage{silence}
+%\WarningFilter{fancyhdr}{\string\headheight\space is too}
+%\WarningFilter{fancyhdr}{\string\footskip\space is too small}
+%\WarningFilter{unicode-math}{original `unicode-math' definition}
+%\WarningsOff
 
 % Document setup, base packages
 \RequirePackage[english, iso]{isodate}				% ISO date
@@ -49,10 +49,10 @@
 \if@padajarfancyhdr									% fancyhdr if requested
 	\RequirePackage{fancyhdr} \else \fi
 %\RequirePackage[T1]{fontenc}						% font encoding
-\RequirePackage[l]{plex-mono}							% ibm plex mono
+\RequirePackage[l]{plex-mono}						% ibm plex mono
 \RequirePackage[sb, l]{plex-serif}					% ibm plex serif
-\if@padajarserif \RequirePackage[mb, l]{plex-sans}  % ibm plex sans (non-default)
-\else \RequirePackage[sfdefault, mb, l]{plex-sans}  % ibm plex sans (default)
+\if@padajarserif \RequirePackage[mb, l]{plex-sans}  % ibm plex sans (when non-default)
+\else \RequirePackage[sfdefault, mb, l]{plex-sans}  % ibm plex sans (when default)
 \fi
 %\RequirePackage[]{plex-serif}					% ibm plex serif
 %\if@padajarserif \RequirePackage[]{plex-sans}  % ibm plex sans (non-default)
@@ -60,7 +60,13 @@
 %\fi
 
 \if@padajardoc										%  if requested
-\RequirePackage[left=1in, right=1in, top=1in, bottom=0.5in]{geometry}
+%\RequirePackage[left=1in, right=1in,				%
+%                top=0.5in, bottom=0.5in,            %
+\RequirePackage{calc}
+\RequirePackage[total={6.5in, 10in}, top=0.5in, left=1in,%
+                includeheadfoot,				%
+                heightrounded     %
+                ]             {geometry}
 \RequirePackage{enumitem}							% enum cusotmization
 %	\setlength{\partopsep}{0pt}
 %	\setlength{\topsep}{0pt}
@@ -93,7 +99,6 @@
 \let\oldtext\text
 \renewcommand{\text}[1]{\oldtext{\rmfamily #1}}
 \renewcommand{\epsilon}{\varepsilon}
-
 
 % Include graphics, pdfs, code
 \RequirePackage{graphicx}							% load graphics
