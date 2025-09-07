@@ -3,3 +3,8 @@
 *.out
 *.gz
 *.toc
+slides/slides-example.vrb
+slides/slides-example.snm
+slides/slides-example.nav
+slides/slides-example.blg
+slides/slides-example.bbl
