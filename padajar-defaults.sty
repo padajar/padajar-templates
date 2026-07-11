@@ -18,11 +18,11 @@
 % 	FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 % 	IN THE SOFTWARE.
 
-% padajar.sty - Custom LaTeX style package
+% padajar-defaults.sty - Custom LaTeX style package
 % Created on 2025-03-22
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{padajar-defaults}[2025/03/21 Custom LaTeX style package]
+\ProvidesPackage{padajar-defaults}[2026/07/11 Custom LaTeX style package]
 
 \newif\if@padajarserif    \@padajarseriffalse		% serif opt (default false)
 	\DeclareOption{serif}{\@padajarseriftrue}
@@ -30,8 +30,6 @@
 	\DeclareOption{nofancyhdr}{\@padajarfancyhdrfalse}
 \newif\if@padajardoc \@padajardocfalse				% doc opt (default false)
 	\DeclareOption{doc}{\@padajardoctrue}
-\newif\if@padajarslides \@padajarslidesfalse		% slides opt (default false)
-	\DeclareOption{slides}{\@padajarslidestrue}
 \ProcessOptions\relax
 
 
@@ -67,7 +65,7 @@
                 includeheadfoot,				%
                 heightrounded     %
                 ]             {geometry}
-\RequirePackage{enumitem}							% enum cusotmization
+\RequirePackage{enumitem}							% enum customization
 %	\setlength{\partopsep}{0pt}
 %	\setlength{\topsep}{0pt}
 	\setlist[1]{partopsep=0pt, topsep=0pt}
@@ -82,18 +80,22 @@
 \RequirePackage{amsfonts, amssymb, amsmath, amsthm}	% math syntax
 \RequirePackage{mathtools}							% math tools
 \RequirePackage{bbm}								% math bbm font
+\RequirePackage{dsfont}								% crisp \mathds{1} indicator
 \RequirePackage{mathrsfs}							% math rsfs font
 \RequirePackage{physics}							% for derivs and integrals
 \RequirePackage{cancel}								% cancel items
 \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
 %\setmathfont{IBM Plex Math}							% ibm plex math
 %\RequirePackage{xcharter-math}
+\RequirePackage{etoolbox} 							% for patching commands
+\AtBeginEnvironment{tablenotes}{\footnotesize}		% smaller table notes
 
 \setmathfont{Latin Modern Math}
 \setmathfont[range=up]{IBMPlexSerif-Light.otf}
 \setmathfont[range=it]{IBMPlexSerif-LightItalic.otf}
 \setmathfont[range=]{Latin Modern Math}
 \setmathfont[range="2202]{texgyreschola-math.otf}	% manually set \partial from TeX Gyre Schola
+\setmathfont[range="2207]{texgyreschola-math.otf}	% manually set \nabla from TeX Gyre Schola
 \setmathfontface\mathrm{IBMPlexSerif-Light.otf}
 
 \let\oldtext\text
@@ -105,6 +107,7 @@
 \RequirePackage{svg}								% load graphics
 \RequirePackage{pdfpages}							% include pdf pages
 \RequirePackage{pgfpages}							% pdf page options
+\RequirePackage{tikz}								% tikz graphics
 \RequirePackage{pdflscape}							% landscape pages
 \RequirePackage{adjustbox}							% crop images, pdfs
 \RequirePackage{listings}							% include code
@@ -115,34 +118,37 @@
 \RequirePackage{makecell}							% multiline cells
 \RequirePackage{booktabs}							% pretty tables
 \RequirePackage{subcaption}							% subcaptions
-\RequirePackage{threeparttable}						% table notes
+\RequirePackage[flushleft]{threeparttable}						% table notes
+\RequirePackage{multirow}							% cells spanning multiple rows
+\RequirePackage{tabularray}                         % table formatting
+\UseTblrLibrary{counter}
+
 
 \captionsetup[table]{skip=0pt, aboveskip=0pt, belowskip = 0pt,
 	position=top, labelfont=normalfont}
 
 \RequirePackage{float}								% fix up floats
 
+\RequirePackage[normalem]{ulem} 						% add strikethrough
+
 % Fix handling for subfigures (interaction of subcaption and threeparttable)
-\makeatletter
-	\AtBeginEnvironment{subfigure}{\let\@caption\caption@original@caption}
-	\AtBeginDocument{\let\caption@original@caption\@caption}
-\makeatother
+\AtBeginEnvironment{subfigure}{\let\@caption\caption@original@caption}
+\AtBeginDocument{\let\caption@original@caption\@caption}
 
 % Custom colors
 \definecolor{padajarorange} {HTML} {F47C44}
-\definecolor{padajarblue}   {HTML} {4473F4}
-\definecolor{padajarpurple} {HTML} {7E16BB}
-\definecolor{padajargreen}  {HTML} {2D9053}
-\definecolor{padajarbg}     {HTML} {2C3E50}
-\definecolor{mygreen}       {rgb}  {0,0.6,0}
-\definecolor{mygray}        {rgb}  {0.5,0.5,0.5}
-\definecolor{mymauve}       {rgb}  {0.58,0,0.82}
+\definecolor{padajarblue}     {HTML} {4473F4}
+\definecolor{padajarpurple}  {HTML} {7E16BB}
+\definecolor{padajargreen}   {HTML} {2D9053}
+\definecolor{padajarbg}       {HTML} {2C3E50}
+\definecolor{mygreen}         {rgb}    {0,0.6,0}
+\definecolor{mygray}           {rgb}    {0.5,0.5,0.5}
+\definecolor{mymauve}        {rgb}    {0.58,0,0.82}
 
 \colorlet{padajaralert}{padajarorange!90!black}
 
 %\definecolor{padajarbg}{HTML}{092F29}   103739  10391A  102730
 %2C3E50  29465B   36454F   2D4256
-
 
 % Paragraph formatting
 \setlength{\parindent}{0mm}
@@ -247,7 +253,7 @@
 					  ustrrtrim, ustrsortkey, ustrsortkeyex, ustrtitle, ustrto,
 					  ustrtohex, ustrtoname, ustrtrim, ustrunescape, ustrupper,
 					  ustrword, ustrwordcount, usubinstr, usubstr, word,
-					  wordbreaklocale, worcount,},
+					  wordbreaklocale, wordcount,},
 	% Trig functions
 	morekeywords=[12]{acos, acosh, asin, asinh, atan, atanh, cos, cosh, sin,
 					  sinh, tan, tanh,},
@@ -316,7 +322,37 @@
 \newcommand{\eps}{\varepsilon}
 \newcommand{\E}{\mathbb{E}}
 \newcommand{\V}{\mathbb{V}}
-\newcommand{\indic}{\mathbbm{1}}
+\newcommand{\indic}{\mathds{1}}
+\newcommand{\hrefemail}[1]{\href{mailto:#1}{#1}}
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}			% superscript, in or out of math mode
+
+% \selfnote, bold and purple
+\newcommand{\selfnote}[1]{{\color{padajarpurple}{\bfseries #1}}}
+
+% \Selfnote, bold + purple (paragraph)
+\newenvironment{Selfnote}{%
+	\par
+	\color{padajarpurple}%
+	\bfseries
+}
+{%
+	\par
+}
+
+\if@padajardoc % add alert commands in doc
+    % \alert, bold + orange
+    \newcommand{\alert}[1]{{\color{padajaralert}{\bfseries #1}}}
+    % \Alert, bold + orange
+    \newenvironment{Alert}{%
+    	\par
+    	\color{padajaralert}%
+    	\bfseries
+    }
+    {%
+    	\par
+    }
+    \else
+\fi
 
 \AtBeginDocument{
 	\renewcommand{\epsilon}{\varepsilon}

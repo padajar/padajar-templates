@@ -22,7 +22,7 @@
 % Created on 2025-07-17
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{padajar-paper}[2025/03/21 padajar paper template]
+\ProvidesClass{padajar-paper}[2026/07/11 padajar paper template]
 
 % for header settings
 \PassOptionsToPackage{twoside}{fancyhdr}
@@ -35,12 +35,10 @@
 % fix footer length because no footer
 \geometry{total={6.5in,10.5in}}
 
-% fix for silence/authblk interaction
-\RequirePackage{etoolbox}
+% fix for silence/authblk interaction (etoolbox loaded via padajar-defaults)
 \makeatletter
 \robustify\@latex@warning@no@line
 \makeatother
-\RequirePackage[noblocks]{authblk}
 
 % Define commands to set document information
 \makeatletter
@@ -71,8 +69,9 @@
 }
 
 \RequirePackage{changepage}
+\RequirePackage[noblocks]{authblk}
 
-\newcommand{\makepapertitle} {
+\renewcommand{\maketitle} {
 	\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
 	\newpage
 	\null
@@ -82,7 +81,7 @@
 		{\LARGE \rmfamily \@papertitle\ifnotempty{\@papersubtitle}{}{\processthanks}}
 		{\processsubtitle\ifnotempty{\@papersubtitle}{\!\!\! \processthanks}{}}
 		\vskip 0.25 em %
-		{\@author \\}
+		{\@author}
 		\vskip 1em%
 		{\@date}%
 	\end{center}%		
@@ -100,6 +99,9 @@
 	\renewcommand*{\thefootnote}{\arabic{footnote}}
 	\setcounter{footnote}{0}
 }
+
+% backwards-compatible alias for the former command name
+\newcommand{\makepapertitle}{\maketitle}
 
 \makeatother
 

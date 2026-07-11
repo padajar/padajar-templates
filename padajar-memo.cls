@@ -18,14 +18,14 @@
 % 	FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 % 	IN THE SOFTWARE.
 
-% padajar-pset.cls - Custom LaTeX pset package
+% padajar-memo.cls - Custom LaTeX memo package
 % Created on 2025-03-22
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{padajar-memo}[2025/03/21 padajar memo template]
+\ProvidesClass{padajar-memo}[2026/07/11 padajar memo template]
 
 \newif\ifpadajarserif 			  \padajarseriffalse 		% serif font
-	\DeclareOption{noreflections}{\printreflectionsfalse}	% (default sans)
+	\DeclareOption{serif}{\padajarseriftrue}				% (default sans)
 
 % load article class
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
@@ -92,31 +92,24 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{example}[theorem]{Example}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\AddToHook{env/lemma/begin}{\crefalias{theorem}{lemma}}
+\AddToHook{env/example/begin}{\crefalias{theorem}{example}}
+\AddToHook{env/proposition/begin}{\crefalias{theorem}{proposition}}
+
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
 
 
-% \selfnote, bold and purple
-\newcommand{\selfnote}[1]{{\color{padajarpurple}{\bfseries #1}}}
-
-% \Selfnote, bold + purple (paragraph)
-\newenvironment{Selfnote}{%
-	\par
-	\color{padajarpurple}%
-	\bfseries
-}
-{%
-	\par
-}
-
-% \alert, bold + orange
-\newcommand{\alert}[1]{{\color{padajaralert}{\bfseries #1}}}
-% \Alert, bold + orange
-\newenvironment{Alert}{%
-	\par
-	\color{padajaralert}%
-	\bfseries
-}
-{%
-	\par
+\AtEndPreamble{
+\crefname{proposition}{proposition}{propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\crefname{lemma}{lemma}{lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{example}{example}{examples}
+\Crefname{example}{Example}{Examples}
 }
 
 \AtBeginDocument{
@@ -151,6 +144,6 @@
 }
 \makeatother
 \RequirePackage{hyperref}
-\RequirePackage[nameinlink]{cleveref}
+\RequirePackage[noabbrev, nameinlink]{cleveref}
 
 \endinput

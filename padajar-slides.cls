@@ -1,4 +1,4 @@
-% Copyright 2025 Phi Adajar (padajar.com, phipadajar@mit.edu)
+% Copyright 2025 Phi Adajar (padajar.com, phiadajar@mit.edu)
 
 % Permission is hereby granted, free of charge, to any person obtaining a copy
 % 	of this software and associated documentation files (the "Software"), to
@@ -22,10 +22,10 @@
 % Created on 2025-03-22
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{padajar-slides}[2025/03/21 padajar slides template]
+\ProvidesClass{padajar-slides}[2026/07/11 padajar slides template]
 
 \newif\ifpadajarserif 			  \padajarseriffalse 			% serif font
-	\DeclareOption{noreflections}{\printreflectionsfalse}		% (default sans)
+	\DeclareOption{serif}{\padajarseriftrue}					% (default sans)
 \newif\ifpadajarsectionslides	  \padajarsectionslidesfalse	% slide at start of section
 	\DeclareOption{sectionslides}{\padajarsectionslidestrue}	% (default no slide)
 
@@ -35,14 +35,15 @@
 \LoadClass[aspectratio=169]{beamer}
 
 % Pass the serif option to padajar-defaults if needed
-\ifpadajarserif \RequirePackage[serif, slides]{padajar-defaults}
-\else			\RequirePackage[slides]{padajar-defaults}
+\ifpadajarserif \RequirePackage[serif]{padajar-defaults}
+\else			\RequirePackage[]{padajar-defaults}
 \fi
 
 % other beamer options
 \setbeamertemplate{note page}[plain]
-\usetheme[numbering=fraction, sectionpage=simple, block=fill]{moloch}           % Use moloch theme
+\usetheme[sectionpage=simple, block=fill]{moloch}           % Use moloch theme
 \setbeamertemplate{frametitle continuation}{(\insertcontinuationcount)}
+% \setbeamertemplate{page number in head/foot}[totalframenumber]	% footer is redefined, not needed
 \setbeamercovered{transparent}
 
 
@@ -58,21 +59,42 @@
 \def\@name      {Student Name}
 \def\@email     {email@me.com}
 \def\@pdftitle  {Class Assignment}
-\def\@date      {\today}
 
 % Define user-friendly interface
 \newcommand  {\name}      [1]{\def\@name      {#1}}
 \newcommand  {\email}     [1]{\def\@email     {#1}}
 \newcommand  {\pdftitle}  [1]{\def\@pdftitle  {#1}}
-\renewcommand{\date}      [1]{\def\@date      {#1}}
+
 
 % set sections in footline
 \setbeamertemplate{footline}{%
 	\begin{beamercolorbox}[colsep=1.5pt]{upper separation line head}
 	\end{beamercolorbox}
-	\begin{beamercolorbox}{section in head/foot}
-		\vskip2pt\insertnavigation{\paperwidth}\vskip2pt
-	\end{beamercolorbox}%
+	% \begin{beamercolorbox}{section in head/foot}
+	% 	\vskip2pt\insertnavigation{\paperwidth}\vskip2pt
+	% \end{beamercolorbox}%
+
+  % middle: section bubbles + page number at right
+  \begin{beamercolorbox}[wd=\paperwidth, ht=2.5ex, dp=1.125ex]{section in head/foot}
+    \vskip2pt
+    \hbox{%
+      \hspace*{1ex}%
+      % section navigation (the bubbles)
+      \insertnavigation{\dimexpr\paperwidth-6em\relax}%
+      % right-aligned slide number
+      \hfill%
+      \usebeamercolor[fg]{footline}%
+      \usebeamerfont{footline}%
+      \hbox to 5em{\hfill%
+        \usebeamercolor[fg]{footline}%
+        \usebeamerfont{footline}%
+        \insertframenumber{} / \insertmainframenumber%
+      }%
+      \hspace*{4em}%
+    }%
+    \vskip1pt
+    \end{beamercolorbox}
+
 	\begin{beamercolorbox}[colsep=1.5pt]{lower separation line head}
 	\end{beamercolorbox}
 }
@@ -170,7 +192,20 @@
 	\only#2{\btIfInRange{\value{lstnumber}}{#1}{\color{padajarorange!15}\def\lst@linebgrdcmd{\color@block}}{\def\lst@linebgrdcmd####1####2####3{}}}%
 }%
 
+% citation commands
 \newcommand{\graycitep}[1]{{\footnotesize\textcolor{normal text.fg!50}{\citep{#1}}}}
+
+% fix parenthesis error
+\let\oldbibitem=\bibitem
+\renewcommand{\bibitem}[2][]{\label{#2}\oldbibitem[#1]{#2}}
+\let\oldcite=\cite
+\renewcommand\cite[1]{\hypersetup{linkcolor=normal text.fg!75}\hyperlink{#1}{\oldcite{#1}}}
+\let\oldcitep=\citep
+\renewcommand\citep[1]{\hypersetup{linkcolor=normal text.fg!75}\hyperlink{#1}{\oldcitep{#1}}}
+\let\oldciteauthor=\citeauthor
+\renewcommand\citeauthor[1]{\hypersetup{linkcolor=normal text.fg!75}\hyperlink{#1}{\oldciteauthor{#1}}}
+
+
 
 
 \let\beamer@writeslidentry@miniframeson=\beamer@writeslidentry%
@@ -201,6 +236,7 @@
 	% Make internal variables accessible to hyperref
 	\global\let\name=\name
 	\global\let\pdftitle=\pdftitle
+	\hypersetup{pdfauthor={\insertshortauthor}, pdftitle={\insertshorttitle}}
 }
 \makeatother
 
@@ -214,9 +250,9 @@
 	linkcolor=normal text.fg,
 	citecolor=gray,
 	urlcolor = padajarblue,
-	pdfauthor  = {test},
-	pdftitle   = {test},
 }
+% keep author/title markup (\\, \footnote, etc.) out of PDF metadata
+\pdfstringdefDisableCommands{\def\\{ }\def\footnote#1{}\def\thanks#1{}\def\hrefemail#1{#1}}
 \usepackage[nameinlink]{cleveref}
 
 \endinput

@@ -1,4 +1,4 @@
-% Copyright 2025 Paolo Adajar (padajar.com, paoloadajar@mit.edu)
+% Copyright 2025 Phi Adajar (padajar.com, phiadajar@mit.edu)
 
 % Permission is hereby granted, free of charge, to any person obtaining a copy
 % 	of this software and associated documentation files (the "Software"), to 
@@ -22,12 +22,12 @@
 % Created on 2025-03-22
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{padajar-pset}[2025/03/21 padajar pset template]
+\ProvidesClass{padajar-pset}[2026/07/11 padajar pset template]
 
 \newif\ifprintreflections 		  \printreflectionsfalse 	% show reflections 
 	\DeclareOption{reflections}  {\printreflectionstrue}	% (default hide)
 \newif\ifpadajarserif 			  \padajarseriffalse 		% serif font
-	\DeclareOption{noreflections}{\printreflectionsfalse}	% (default sans)
+	\DeclareOption{serif}       {\padajarseriftrue}		% (default sans)
 
 % load exam class
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{exam}}
@@ -72,7 +72,6 @@
 }
 
 % Professors
-\def\@professorlist{}
 \def\@firstprofessor{}
 \def\@professorlist{}
 \newcommand{\professors}[1]{%
