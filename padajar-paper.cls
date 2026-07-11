@@ -22,7 +22,7 @@
 % Created on 2025-07-17
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{padajar-paper}[2026/07/11 padajar paper template]
+\ProvidesClass{padajar-paper}[2026/07/11 v1.3.1 padajar paper template]
 
 % for header settings
 \PassOptionsToPackage{twoside}{fancyhdr}

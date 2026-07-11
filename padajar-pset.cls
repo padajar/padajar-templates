@@ -22,7 +22,7 @@
 % Created on 2025-03-22
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{padajar-pset}[2026/07/11 padajar pset template]
+\ProvidesClass{padajar-pset}[2026/07/11 v1.3.1 padajar pset template]
 
 \newif\ifprintreflections 		  \printreflectionsfalse 	% show reflections 
 	\DeclareOption{reflections}  {\printreflectionstrue}	% (default hide)

@@ -22,7 +22,7 @@
 % Created on 2025-03-22
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{padajar-slides}[2026/07/11 padajar slides template]
+\ProvidesClass{padajar-slides}[2026/07/11 v1.3.1 padajar slides template]
 
 \newif\ifpadajarserif 			  \padajarseriffalse 			% serif font
 	\DeclareOption{serif}{\padajarseriftrue}					% (default sans)

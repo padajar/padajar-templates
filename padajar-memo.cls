@@ -22,7 +22,7 @@
 % Created on 2025-03-22
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{padajar-memo}[2026/07/11 padajar memo template]
+\ProvidesClass{padajar-memo}[2026/07/11 v1.3.1 padajar memo template]
 
 \newif\ifpadajarserif 			  \padajarseriffalse 		% serif font
 	\DeclareOption{serif}{\padajarseriftrue}				% (default sans)
