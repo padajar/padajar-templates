@@ -22,7 +22,7 @@
 % Created on 2025-03-22
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{padajar-defaults}[2026/07/11 v1.3.1 Custom LaTeX style package]
+\ProvidesPackage{padajar-defaults}[2026/07/11 v1.4.0 Custom LaTeX style package]
 
 \newif\if@padajarserif    \@padajarseriffalse		% serif opt (default false)
 	\DeclareOption{serif}{\@padajarseriftrue}
@@ -123,6 +123,12 @@
 \RequirePackage{multirow}							% cells spanning multiple rows
 \RequirePackage{tabularray}                         % table formatting
 \UseTblrLibrary{counter}
+
+% make \input expandable inside tabular (so esttab \input'd fragments work in tables)
+\ExplSyntaxOn
+\cs_set:Npn \expandableinput #1 { \use:c { @@input } { \file_full_name:n {#1} } }
+\ExplSyntaxOff
+\AddToHook{env/tabular/begin}{\let\input\expandableinput}
 
 
 \captionsetup[table]{skip=0pt, aboveskip=0pt, belowskip = 0pt,
@@ -324,6 +330,7 @@
 \newcommand{\E}{\mathbb{E}}
 \newcommand{\V}{\mathbb{V}}
 \newcommand{\indic}{\mathds{1}}
+\renewcommand{\Pr}{\mathbb{P}}						% blackboard P for probability
 \newcommand{\hrefemail}[1]{\href{mailto:#1}{#1}}
 \def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}			% superscript, in or out of math mode
 
@@ -358,5 +365,8 @@
 \AtBeginDocument{
 	\renewcommand{\epsilon}{\varepsilon}
 }
+
+% upright equation numbers in \cref (e.g. "(3)"), when cleveref is loaded
+\AtEndPreamble{\@ifpackageloaded{cleveref}{\creflabelformat{equation}{#2\textup{#1}#3}}{}}
 
 \endinput

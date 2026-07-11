@@ -22,7 +22,7 @@
 % Created on 2025-07-17
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{padajar-paper}[2026/07/11 v1.3.1 padajar paper template]
+\ProvidesClass{padajar-paper}[2026/07/11 v1.4.0 padajar paper template]
 
 % for header settings
 \PassOptionsToPackage{twoside}{fancyhdr}
@@ -148,6 +148,18 @@
 \makeatother
 \RequirePackage{hyperref}
 \RequirePackage[nameinlink]{cleveref}
+
+% --- appendix: cleveref "Appendix A" references + A.1 table/figure numbering ---
+\AddToHook{cmd/appendix/after}{%
+	\crefalias{section}{appendix}%
+	\crefalias{subsection}{appendix}%
+	\setcounter{table}{0}%
+	\setcounter{figure}{0}%
+	\setcounter{theorem}{0}%
+	\renewcommand{\thetable}{\Alph{section}.\arabic{table}}%
+	\renewcommand{\thefigure}{\Alph{section}.\arabic{figure}}%
+	\renewcommand{\thetheorem}{\thesection.\arabic{theorem}}%
+}
 
 
 \endinput

@@ -46,4 +46,17 @@
 		\Blindtext[1]
 		\lipsum[5-7]
 
+\appendix
+\section{An example appendix}\label{app:demo}
+
+Cross-references to appendix material read like \Cref{app:demo}, and tables, figures, and theorems are renumbered with the section letter. Equation references print upright, as in \Cref{eq:tail}.
+
+\begin{equation}\label{eq:tail}
+	\Pr(X > x) = 1 - F(x).
+\end{equation}
+
+\begin{theorem}\label{thm:demo}
+	An appendix theorem, numbered \thetheorem.
+\end{theorem}
+
 \end{document}

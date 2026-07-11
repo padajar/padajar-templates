@@ -5,7 +5,7 @@
 % Required document information
 \name         {phi adajar}
 \email        {phiadajar@mit.edu}
-\memonote	  {v1.3.1}					% in practice, often used for who the note is going to
+\memonote	  {v1.4.0}					% in practice, often used for who the note is going to
 \date         {\today}
 \pdftitle     {padajar-templates}
 
@@ -55,7 +55,7 @@ All \texttt{padajar-templates} load the package \texttt{padajar-defaults}. This 
 	\end{itemize}
 	If you want the full list, head into the source code of this package.
 	\item A \texttt{listings} definition for Stata (modified from \href{https://github.com/satejsoman/stata-lstlisting}{here}), along with a nicer \texttt{listings} scheme.
-	\item Some math commands I find useful: \ttslash{eps} ($\eps$), \ttslash{E} ($\E$), \ttslash{V} ($\V$), and \ttslash{indic} ($\indic$).
+	\item Some math commands I find useful: \ttslash{eps} ($\eps$), \ttslash{E} ($\E$), \ttslash{V} ($\V$), \ttslash{indic} ($\indic$), and \ttslash{Pr} ($\Pr$).
 	\item A \texttt{padajar} color scheme! :)
 \end{itemize}
 
@@ -104,6 +104,7 @@ Some notable features include:
 \begin{itemize}
 	\item Formatted title pages using \ttslash{maketitle} (the former \ttslash{makepapertitle} is retained as an alias). This will load \ttslash{papertitle}, \ttslash{papershorttitle}, and optionally, \ttslash{paperthanks} and \ttslash{paperabstract}. Authors are formatted using the \texttt{authblk} package.
 	\item A ``two-sided" document format, with headers that alternate between \ttslash{papershortauthors} and \ttslash{papershorttitle}. 
+	\item Automatic appendix formatting: after \ttslash{appendix}, tables, figures, and theorems renumber as \texttt{A.1}, and \ttslash{cref} prints them as ``Appendix~A''.
 \end{itemize}
 
 Otherwise, it's identical to the \texttt{padajar-memo} class. 
@@ -201,6 +202,7 @@ Conversely, here are some things that I explicitly \textit{don't} plan on doing 
 
 
 \begin{tabular}{T p{\textwidth-1.75in}}
+	1.4.0 (2026-07-11) & add \ttslash{Pr} (blackboard $\mathbb{P}$); automatic appendix formatting in \texttt{padajar-paper} (\texttt{A.1} table/figure/theorem numbering and ``Appendix~A'' cross-references); upright equation references; expandable \ttslash{input} inside \texttt{tabular} for \texttt{esttab} fragments \\
 	1.3.1 (2026-07-11) & page-geometry cleanup: \ttslash{headheight} sized to the header and \ttslash{textheight} recomputed through geometry, with consistent page margins across \texttt{padajar-memo}, \texttt{padajar-paper}, and \texttt{padajar-pset}; flexible \ttslash{parskip} for more even page fill; footnotes pinned to the page bottom via \texttt{footmisc} \\
 	1.3.0 (2026-07-11) & paper title pages now use \ttslash{maketitle} (\ttslash{makepapertitle} kept as a backwards-compatible alias); restore \ttslash{sym}; sharper \ttslash{indic} (via \texttt{dsfont}); add cleveref names and \texttt{R}/\texttt{L}/\texttt{C} \texttt{tabularx} columns; fix the \texttt{serif} option across classes; misc header/typesetting fixes \\
 	1.2.0 (2025-09-07) & add \ttslash{padajar-paper}, other minor typesetting \\
