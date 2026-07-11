@@ -151,7 +151,7 @@
 \runningheadrule
 \runningfootrule
 
-\setlength{\parskip}{11pt}
+\setlength{\parskip}{11pt plus 3pt minus 1pt}% flexible so pages can fill evenly
 \extraheadheight[27.5pt]{0pt}
 \extrafootheight{-11pt}
 \setlength{\headsep}{6pt}

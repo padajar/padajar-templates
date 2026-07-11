@@ -32,8 +32,7 @@
 \ProcessOptions\relax
 \LoadClass{padajar-memo}
 
-% fix footer length because no footer
-\geometry{total={6.5in,10.5in}}
+% margins inherited from padajar-memo, so paper matches the memo page geometry
 
 % fix for silence/authblk interaction (etoolbox loaded via padajar-defaults)
 \makeatletter
@@ -122,7 +121,6 @@
 \fancypagestyle{firstpage}{
 	\fancyhf{}
 	\setlength{\headsep}{11pt}
-	\setlength{\footskip}{0pt}
 	\renewcommand{\headrulewidth}{0pt} % removes horizontal header line
 }
 
@@ -132,7 +130,6 @@
 	\pagestyle{fancy}
 	\fancyhf{}
 	\setlength{\headsep}{11pt}
-	\setlength{\footskip}{0pt}
 %	\fancyhead[R]{\@name}
 %	\fancyhead[L]{\@memotitle}
 %	\fancyfoot[L]{\small\@date}

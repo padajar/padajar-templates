@@ -38,7 +38,7 @@
 \else			\RequirePackage[doc, nofancyhdr]{padajar-defaults}
 \fi
 
-\setlength{\parskip}{11pt}
+\setlength{\parskip}{11pt plus 3pt minus 1pt}% flexible so pages can fill evenly
 
 % Define commands to set document information
 \makeatletter
@@ -60,6 +60,17 @@
 
 \RequirePackage{fancyhdr}
 
+% --- page geometry ---------------------------------------------------
+% The first-page header is two lines tall; size \headheight to exactly that
+% and let geometry (loaded by padajar-defaults) recompute \textheight, so the
+% text block and footer sit identically on page 1 and the running pages.
+% NB: done here in the preamble, not \AtBeginDocument, or geometry has
+% already fixed the page and the recompute is ignored.
+\normalsize % ensure \baselineskip is set before we measure it
+\setlength{\headheight}{2\baselineskip}
+\geometry{headheight=\headheight, headsep=11pt, footskip=22pt}
+% ---------------------------------------------------------------------
+
 \RequirePackage{titlesec}
 \titlespacing\section{0pt}{0pt plus 2pt minus 0pt}{0pt plus 2pt minus 0pt}
 \titlespacing\subsection{0pt}{0pt plus 2pt minus 0pt}{0pt plus 2pt minus 0pt}
@@ -68,13 +79,8 @@
 
 \fancypagestyle{firstpage} {
 \fancyhf{}
-\setlength{\headheight}{22.01pt}
-\setlength{\headsep}{11pt}
-\setlength{\footskip}{22.3pt}
-\addtolength{\textheight}{-11.31pt}
 \fancyhead[R]{\@name \\ \href{mailto:\@email}{\@email}}
 \fancyhead[L]{\@memotitle \\ \@memonote, \@date}
-
 \fancyfoot[L]{}
 \fancyfoot[R]{\small\thepage}
 }
@@ -129,17 +135,12 @@
 
 	\pagestyle{fancy}
 	\fancyhf{}
-	\setlength{\headsep}{11pt}
-	\setlength{\footskip}{22pt}
 	\fancyhead[R]{\@name}
 	\fancyhead[L]{\@memotitle}
 	\fancyfoot[L]{\small\@date}
 	\fancyfoot[R]{\small\thepage}
-	\addtolength{\textheight}{11pt}
 
 	\thispagestyle{firstpage}
-
-	\setlength{\parskip}{11.31pt}
 %	\setlist[1]{before=\vspace{-11pt}, after=\vspace{-11pt}}
 }
 \makeatother
