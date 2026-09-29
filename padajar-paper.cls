@@ -150,6 +150,8 @@
 \RequirePackage[nameinlink]{cleveref}
 
 % --- appendix: cleveref "Appendix A" references + A.1 table/figure numbering ---
+\crefname{appendix}{Appendix}{Appendices}
+\Crefname{appendix}{Appendix}{Appendices}
 \AddToHook{cmd/appendix/after}{%
 	\crefalias{section}{appendix}%
 	\crefalias{subsection}{appendix}%

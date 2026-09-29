@@ -80,7 +80,8 @@
 \fancypagestyle{firstpage} {
 \fancyhf{}
 \fancyhead[R]{\@name \\ \href{mailto:\@email}{\@email}}
-\fancyhead[L]{\@memotitle \\ \@memonote, \@date}
+% Empty \memonote{} -> header line shows only the date (no leading comma).
+\fancyhead[L]{\@memotitle \\ \ifx\@memonote\@empty\else\@memonote, \fi\@date}
 \fancyfoot[L]{}
 \fancyfoot[R]{\small\thepage}
 }
