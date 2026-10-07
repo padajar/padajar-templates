@@ -22,10 +22,10 @@
 % Created on 2025-03-22
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{padajar-memo}[2026/07/11 v1.4.0 padajar memo template]
+\ProvidesClass{padajar-memo}[2026/10/04 v1.5.0 padajar memo template]
 
 \newif\ifpadajarserif 			  \padajarseriffalse 		% serif font
-	\DeclareOption{serif}{\padajarseriftrue}				% (default sans)
+	\DeclareOption{serif}{\padajarseriftrue}	% (default sans)
 
 % load article class
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
@@ -82,6 +82,7 @@
 \fancyhead[R]{\@name \\ \href{mailto:\@email}{\@email}}
 % Empty \memonote{} -> header line shows only the date (no leading comma).
 \fancyhead[L]{\@memotitle \\ \ifx\@memonote\@empty\else\@memonote, \fi\@date}
+
 \fancyfoot[L]{}
 \fancyfoot[R]{\small\thepage}
 }
@@ -100,23 +101,100 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{example}[theorem]{Example}
 \newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+% Assumptions and implications run on their own counters, so the paper numbers
+% Assumption 1..n and Implication 1..n independently of Theorem/Proposition.
+\newtheorem{assumption}{Assumption}
+\newtheorem{implication}{Implication}
+
+% Deferred: cleveref is loaded by padajar-paper.cls, i.e. after this class, so
+% \crefname does not yet exist here. The guard keeps this class usable on its own,
+% where cleveref may never be loaded at all.
+\AtBeginDocument{%
+  \@ifundefined{crefname}{}{%
+    \crefname{assumption}{assumption}{assumptions}%
+    \Crefname{assumption}{Assumption}{Assumptions}%
+    \crefname{implication}{implication}{implications}%
+    \Crefname{implication}{Implication}{Implications}%
+  }%
+}
+
+
 
 \AddToHook{env/lemma/begin}{\crefalias{theorem}{lemma}}
 \AddToHook{env/example/begin}{\crefalias{theorem}{example}}
 \AddToHook{env/proposition/begin}{\crefalias{theorem}{proposition}}
+\AddToHook{env/definition/begin}{\crefalias{theorem}{definition}}
+\AddToHook{env/corollary/begin}{\crefalias{theorem}{corollary}}
+\AddToHook{env/remark/begin}{\crefalias{theorem}{remark}}
 
-\newcolumntype{R}{>{\raggedleft\arraybackslash}X}
-\newcolumntype{L}{>{\raggedright\arraybackslash}X}
-\newcolumntype{C}{>{\centering\arraybackslash}X}
+% Indent every theorem-like environment by an extra 0.5in on both sides. This
+% widens the margins for the enclosed material only: no list is opened, so the
+% environment contributes no vertical space of its own and the spacing above and
+% below stays whatever `theorem-custom' specifies. Setting \leftskip would not
+% work, since the trivlist inside every amsthm environment resets it; \parshape
+% survives because \par is redefined to reset it only inside a group.
+\newlength{\thmindentamount}
+\setlength{\thmindentamount}{0.5in}
+\newenvironment{thmindent}{%
+  \par
+  \advance\@totalleftmargin\thmindentamount
+  \advance\linewidth -2\thmindentamount
+  \parshape\@ne\@totalleftmargin\linewidth
+  \@setpar{{\@@par}}%
+}{%
+  \par
+  % The space below is the theorem style's own \topsep plus the \parskip of the
+  % paragraph that follows; the space above is \topsep alone. Cancelling that
+  % \parskip makes the two gaps equal.
+  \vskip-\parskip\relax
+}
+\newcommand{\padajar@indentthm}[1]{%
+  \AddToHook{env/#1/before}{\begin{thmindent}}%
+  \AddToHook{env/#1/after}{\end{thmindent}}%
+}
+\padajar@indentthm{theorem}
+\padajar@indentthm{lemma}
+\padajar@indentthm{example}
+\padajar@indentthm{proposition}
+\padajar@indentthm{definition}
+\padajar@indentthm{corollary}
+\padajar@indentthm{remark}
+\padajar@indentthm{assumption}
+\padajar@indentthm{implication}
+% amsthm's proof is a trivlist too, so the same hook indents it (added 2026-09-06).
+\padajar@indentthm{proof}
+
+% No paragraph indent after any theorem-like environment or proof. Every one
+% of them is wrapped in thmindent, so hooking its end covers them all; this is
+% the same mechanism the sectioning commands use to suppress the indent of the
+% paragraph that follows a heading (added 2026-09-06).
+\AddToHook{env/thmindent/after}{\@afterindentfalse\@afterheading}
+
+% (R/L/C tabularx column types moved to padajar-defaults.sty, 2026-09-06)
 
 
 \AtEndPreamble{
+\crefname{appendix}{Appendix}{Appendices}
+\Crefname{appendix}{Appendix}{Appendices}
 \crefname{proposition}{proposition}{propositions}
 \Crefname{proposition}{Proposition}{Propositions}
 \crefname{lemma}{lemma}{lemmas}
 \Crefname{lemma}{Lemma}{Lemmas}
 \crefname{example}{example}{examples}
 \Crefname{example}{Example}{Examples}
+\crefname{definition}{definition}{definitions}
+\Crefname{definition}{Definition}{Definitions}
+\crefname{corollary}{corollary}{corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{remark}{remark}{remarks}
+\Crefname{remark}{Remark}{Remarks}
+\crefname{assumption}{assumption}{assumptions}
+\Crefname{assumption}{Assumption}{Assumptions}
+\crefname{implication}{implication}{implications}
+\Crefname{implication}{Implication}{Implications}
 }
 
 \AtBeginDocument{
@@ -147,5 +225,26 @@
 \makeatother
 \RequirePackage{hyperref}
 \RequirePackage[noabbrev, nameinlink]{cleveref}
+
+% After \appendix, \Cref{sec:...} says "Appendix C", not "Section C" (2026-09-06).
+\AddToHook{cmd/appendix/before}{\crefalias{section}{appendix}\crefalias{subsection}{appendix}}
+
+% After \appendix, theorem-like environments, tables and figures are numbered
+% by appendix section (A.1, A.2, ...). Theorem-counter environments (lemma,
+% example, proposition) restart in each section; assumptions and implications
+% restart once at \appendix (2026-10-04).
+\AddToHook{cmd/appendix/after}{%
+  \renewcommand{\thetheorem}{\thesection.\arabic{theorem}}%
+  \setcounter{theorem}{0}%
+  \counterwithin*{theorem}{section}%
+  \renewcommand{\theassumption}{\thesection.\arabic{assumption}}%
+  \setcounter{assumption}{0}%
+  \renewcommand{\theimplication}{\thesection.\arabic{implication}}%
+  \setcounter{implication}{0}%
+  \counterwithin{table}{section}%
+  \counterwithin{figure}{section}%
+  \renewcommand{\thetable}{\Alph{section}.\arabic{table}}%
+  \renewcommand{\thefigure}{\Alph{section}.\arabic{figure}}%
+}
 
 \endinput

@@ -22,7 +22,7 @@
 % Created on 2025-03-22
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{padajar-defaults}[2026/07/11 v1.4.0 Custom LaTeX style package]
+\ProvidesPackage{padajar-defaults}[2026/10/04 v1.5.0 Custom LaTeX style package]
 
 \newif\if@padajarserif    \@padajarseriffalse		% serif opt (default false)
 	\DeclareOption{serif}{\@padajarseriftrue}
@@ -30,6 +30,8 @@
 	\DeclareOption{nofancyhdr}{\@padajarfancyhdrfalse}
 \newif\if@padajardoc \@padajardocfalse				% doc opt (default false)
 	\DeclareOption{doc}{\@padajardoctrue}
+\newif\if@padajarslides \@padajarslidesfalse		% slides opt (default false)
+	\DeclareOption{slides}{\@padajarslidestrue}
 \ProcessOptions\relax
 
 
@@ -73,7 +75,10 @@
 % default space
 \RequirePackage{setspaceenhanced}
 \setstretch{1.14}
-\RequirePackage[bottom]{footmisc}					% pin footnotes to the page bottom
+% pin footnotes to the page bottom; keep article's footnote text layout
+\let\padajar@makefntext\@makefntext
+\RequirePackage[bottom]{footmisc}
+\let\@makefntext\padajar@makefntext
 \else \fi
 \RequirePackage{natbib}								% natbib for citations
 
@@ -81,15 +86,15 @@
 \RequirePackage{amsfonts, amssymb, amsmath, amsthm}	% math syntax
 \RequirePackage{mathtools}							% math tools
 \RequirePackage{bbm}								% math bbm font
-\RequirePackage{dsfont}								% crisp \mathds{1} indicator
 \RequirePackage{mathrsfs}							% math rsfs font
 \RequirePackage{physics}							% for derivs and integrals
 \RequirePackage{cancel}								% cancel items
+\RequirePackage{dsfont}								% crisp \mathds{1} indicator
 \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
 %\setmathfont{IBM Plex Math}							% ibm plex math
 %\RequirePackage{xcharter-math}
 \RequirePackage{etoolbox} 							% for patching commands
-\AtBeginEnvironment{tablenotes}{\footnotesize}		% smaller table notes
+\AtBeginEnvironment{tablenotes}{\footnotesize}
 
 \setmathfont{Latin Modern Math}
 \setmathfont[range=up]{IBMPlexSerif-Light.otf}
@@ -116,10 +121,11 @@
 
 % table options
 \RequirePackage{tabularx}							% tabular options
+\RequirePackage{longtable}							% multi-page tables
 \RequirePackage{makecell}							% multiline cells
 \RequirePackage{booktabs}							% pretty tables
 \RequirePackage{subcaption}							% subcaptions
-\RequirePackage[flushleft]{threeparttable}						% table notes
+\RequirePackage[flushleft]{threeparttable}			% table notes
 \RequirePackage{multirow}							% cells spanning multiple rows
 \RequirePackage{tabularray}                         % table formatting
 \UseTblrLibrary{counter}
@@ -130,17 +136,29 @@
 \ExplSyntaxOff
 \AddToHook{env/tabular/begin}{\let\input\expandableinput}
 
+% ---- table helpers (added 2026-09-06) ----
+% esttab's significance stars: \sym{***} works in and out of math mode.
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+% tabularx column types: X columns ragged-right, ragged-left, centred. Stata table
+% exports that re-declare C only trigger an array warning ("Column C is already defined").
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
 
 \captionsetup[table]{skip=0pt, aboveskip=0pt, belowskip = 0pt,
 	position=top, labelfont=normalfont}
+% Figures: caption above the graphic, small gap. Also tighten the gap between
+% a float and the body text (class default 20pt). 2026-10-04
+\captionsetup[figure]{position=top, skip=4pt, aboveskip=4pt, belowskip=0pt,
+	labelfont=normalfont}
+\setlength{\textfloatsep}{10pt plus 2pt minus 2pt}
+\setlength{\intextsep}  {10pt plus 2pt minus 2pt}
+\setlength{\floatsep}   {10pt plus 2pt minus 2pt}
 
 \RequirePackage{float}								% fix up floats
 
 \RequirePackage[normalem]{ulem} 						% add strikethrough
-
-% Fix handling for subfigures (interaction of subcaption and threeparttable)
-\AtBeginEnvironment{subfigure}{\let\@caption\caption@original@caption}
-\AtBeginDocument{\let\caption@original@caption\@caption}
 
 % Custom colors
 \definecolor{padajarorange} {HTML} {F47C44}
@@ -332,7 +350,10 @@
 \newcommand{\indic}{\mathds{1}}
 \renewcommand{\Pr}{\mathbb{P}}						% blackboard P for probability
 \newcommand{\hrefemail}[1]{\href{mailto:#1}{#1}}
-\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}			% superscript, in or out of math mode
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Var}{Var}
+\newcommand{\indep}{\mathrel{\perp\mkern-10mu\perp}}
+
 
 % \selfnote, bold and purple
 \newcommand{\selfnote}[1]{{\color{padajarpurple}{\bfseries #1}}}
@@ -366,7 +387,16 @@
 	\renewcommand{\epsilon}{\varepsilon}
 }
 
+
+% Fix handling for subfigures (interaction of subcaption and threeparttable)
+\makeatletter
+	\AtBeginEnvironment{subfigure}{\let\@caption\caption@original@caption}
+	\AtBeginDocument{\let\caption@original@caption\@caption}
+\makeatother
+
 % upright equation numbers in \cref (e.g. "(3)"), when cleveref is loaded
-\AtEndPreamble{\@ifpackageloaded{cleveref}{\creflabelformat{equation}{#2\textup{#1}#3}}{}}
+\makeatletter
+\AtEndPreamble{\@ifpackageloaded{cleveref}{\creflabelformat{equation}{#2\textup{(#1)}#3}}{}}
+\makeatother
 
 \endinput

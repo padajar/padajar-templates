@@ -5,7 +5,7 @@
 % Required document information
 \name         {phi adajar}
 \email        {phiadajar@mit.edu}
-\memonote	  {v1.4.0}					% in practice, often used for who the note is going to
+\memonote	  {v1.5.0}					% in practice, often used for who the note is going to
 \date         {\today}
 \pdftitle     {padajar-templates}
 
@@ -55,7 +55,9 @@ All \texttt{padajar-templates} load the package \texttt{padajar-defaults}. This 
 	\end{itemize}
 	If you want the full list, head into the source code of this package.
 	\item A \texttt{listings} definition for Stata (modified from \href{https://github.com/satejsoman/stata-lstlisting}{here}), along with a nicer \texttt{listings} scheme.
-	\item Some math commands I find useful: \ttslash{eps} ($\eps$), \ttslash{E} ($\E$), \ttslash{V} ($\V$), \ttslash{indic} ($\indic$), and \ttslash{Pr} ($\Pr$).
+	\item Some math commands I find useful: \ttslash{eps} ($\eps$), \ttslash{E} ($\E$), \ttslash{V} ($\V$), \ttslash{indic} ($\indic$), \ttslash{Pr} ($\Pr$), \ttslash{Cov} ($\Cov$), \ttslash{Var} ($\Var$), and \ttslash{indep} ($X \indep Y$).
+	\item Table helpers: \ttslash{sym} for \texttt{esttab} significance stars (works in and out of math mode), \texttt{L}/\texttt{R}/\texttt{C} \texttt{tabularx} columns (ragged-right, ragged-left, and centered \texttt{X} columns), and an expandable \ttslash{input} inside \texttt{tabular}, so \texttt{esttab} fragments can be \ttslash{input} into a table.
+	\item Figure captions sit above the graphic, and the space between floats and body text is tightened to 10pt.
 	\item A \texttt{padajar} color scheme! :)
 \end{itemize}
 
@@ -85,6 +87,9 @@ This is the simplest template of the four, and is the one that you're currently 
 	\item Fancy headers and footers, which take information from \ttslash{name}, \ttslash{email}, \ttslash{date}, \ttslash{memotitle}, and \ttslash{memonote}.
 	\item Commands for adding in-line self-notes and alerts, which I use for to-dos and other comments. these commands are \ttslash{selfnote} (\selfnote{purple and bold}) and \ttslash{alert} (\alert{orange and bold}).
 	\item Analagously, the environments \ttslash{Selfnote} and \ttslash{Alert} can contain multi-paragraph entries with the same formatting.
+	\item Theorem-like environments (\texttt{theorem}, \texttt{lemma}, \texttt{proposition}, \texttt{corollary}, \texttt{definition}, \texttt{example}, \texttt{remark}), plus \texttt{assumption} and \texttt{implication} on their own counters. All of these, and \texttt{proof}, are indented 0.5in on both sides, and the paragraph after them is not indented.
+	\item Automatic appendix formatting: after \ttslash{appendix}, tables, figures, and theorems renumber as \texttt{A.1}, and \ttslash{cref} and \ttslash{Cref} print sections as ``Appendix~A''.
+	\item An empty \ttslash{memonote\{\}} drops the note from the first-page header, leaving only the date.
 \end{itemize}
 
 \dots and that's really it. The base setup of this class isn't too far different from the \texttt{article} class. It's just meant to be a clean baseline template so I don't always have to futz around with the same imports and options that I always do.
@@ -93,7 +98,7 @@ This is the simplest template of the four, and is the one that you're currently 
 This minor variant of the \texttt{padajar-memo} document class is to be used for writing up papers. There's not much different about this besides some nice formatting. 
 
 \begin{figure}[ht]
-	\caption{A preview of the \texttt{padajar-memo} class from \texttt{memo-example.pdf.}}
+	\caption{A preview of the \texttt{padajar-paper} class from \texttt{paper-example.pdf.}}
 	\begin{center}
 		\fbox{\includegraphics[width=0.48\textwidth,page=1]{paper/paper-example.pdf}}
 		\fbox{\includegraphics[width=0.48\textwidth,page=2]{paper/paper-example.pdf}}
@@ -102,9 +107,11 @@ This minor variant of the \texttt{padajar-memo} document class is to be used for
 
 Some notable features include:
 \begin{itemize}
-	\item Formatted title pages using \ttslash{maketitle} (the former \ttslash{makepapertitle} is retained as an alias). This will load \ttslash{papertitle}, \ttslash{papershorttitle}, and optionally, \ttslash{paperthanks} and \ttslash{paperabstract}. Authors are formatted using the \texttt{authblk} package.
+	\item Formatted title pages using \ttslash{maketitle} (the former \ttslash{makepapertitle} is retained as an alias). This will load \ttslash{papertitle}, \ttslash{papershorttitle}, and optionally, \ttslash{paperthanks} and \ttslash{paperabstract}. Authors are formatted using the \texttt{authblk} package, as name-over-affiliation blocks in equal-width centered columns. \ttslash{paperpdfauthors} sets the author list in the PDF metadata.
+	\item \ttslash{usdate} prints a US-style date (``October 4, 2026''), and \ttslash{latestversion\{url\}} adds a ``Click here for the latest version'' link on its own line under the date. Use them together as
+	\begin{center}\ttslash{date\{\textbackslash usdate\ \textbackslash latestversion\{url\}\}}\end{center}
+	\item Indented paragraphs with no space between them, and AER-style references (smaller font, tight entries). The repository includes \texttt{aea.bst} for \ttslash{bibliographystyle\{aea\}}.
 	\item A ``two-sided" document format, with headers that alternate between \ttslash{papershortauthors} and \ttslash{papershorttitle}. 
-	\item Automatic appendix formatting: after \ttslash{appendix}, tables, figures, and theorems renumber as \texttt{A.1}, and \ttslash{cref} prints them as ``Appendix~A''.
 \end{itemize}
 
 Otherwise, it's identical to the \texttt{padajar-memo} class. 
@@ -113,7 +120,7 @@ Otherwise, it's identical to the \texttt{padajar-memo} class.
 This class is meant for writing up psets or exams with solutions. As a modification of the \texttt{exam} class, it retains all \texttt{exam} class functionality, like \texttt{parts} and \texttt{subparts}, the \texttt{solution} environment, and creating versions with and without answers included. For more information, refer to \href{https://www.overleaf.com/learn/latex/Typesetting\_exams\_in\_LaTeX}{this Overleaf page}.
 
 \begin{figure}[ht]
-	\caption{A preview of the \texttt{padajar-memo} class from \texttt{pset-example.pdf.}}
+	\caption{A preview of the \texttt{padajar-pset} class from \texttt{pset-example.pdf.}}
 	\begin{center}
 	\fbox{\includegraphics[width=0.48\textwidth,page=4]{pset/pset-example.pdf}}
 	\fbox{\includegraphics[width=0.48\textwidth,page=5]{pset/pset-example.pdf}}
@@ -202,6 +209,7 @@ Conversely, here are some things that I explicitly \textit{don't} plan on doing 
 
 
 \begin{tabular}{T p{\textwidth-1.75in}}
+	1.5.0 (2026-10-04) & figure captions above the graphic with tighter float spacing; \ttslash{Cov}, \ttslash{Var}, \ttslash{indep}; \ttslash{sym} and \texttt{R}/\texttt{L}/\texttt{C} columns moved to \texttt{padajar-defaults}; equation references print with parentheses; \texttt{assumption} and \texttt{implication} environments; theorem-like environments and proofs indented 0.5in; appendix numbering moved into \texttt{padajar-memo}; empty \ttslash{memonote} shows only the date; \texttt{padajar-paper}: author blocks in equal-width columns, \ttslash{usdate}, \ttslash{latestversion}, \ttslash{paperpdfauthors}, indented paragraphs, AER-style references, \texttt{aea.bst} included; footnote text keeps the \texttt{article} layout \\
 	1.4.0 (2026-07-11) & add \ttslash{Pr} (blackboard $\mathbb{P}$); automatic appendix formatting in \texttt{padajar-paper} (\texttt{A.1} table/figure/theorem numbering and ``Appendix~A'' cross-references); upright equation references; expandable \ttslash{input} inside \texttt{tabular} for \texttt{esttab} fragments \\
 	1.3.1 (2026-07-11) & page-geometry cleanup: \ttslash{headheight} sized to the header and \ttslash{textheight} recomputed through geometry, with consistent page margins across \texttt{padajar-memo}, \texttt{padajar-paper}, and \texttt{padajar-pset}; flexible \ttslash{parskip} for more even page fill; footnotes pinned to the page bottom via \texttt{footmisc} \\
 	1.3.0 (2026-07-11) & paper title pages now use \ttslash{maketitle} (\ttslash{makepapertitle} kept as a backwards-compatible alias); restore \ttslash{sym}; sharper \ttslash{indic} (via \texttt{dsfont}); add cleveref names and \texttt{R}/\texttt{L}/\texttt{C} \texttt{tabularx} columns; fix the \texttt{serif} option across classes; misc header/typesetting fixes \\
@@ -221,8 +229,10 @@ To use this package and set of classes:
 	\begin{itemize}
 		\item \texttt{padajar-defaults.sty}
 		\item \texttt{padajar-memo.cls}
+		\item \texttt{padajar-paper.cls}
 		\item \texttt{padajar-pset.cls}
 		\item \texttt{padajar-slides.cls}
+		\item \texttt{aea.bst} (optional; AER bibliography style for papers)
 	\end{itemize}
 	\item Place them into \textit{one} of the following places:
 	\begin{itemize}
